@@ -1,12 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PasswordManager.Database.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles />
-  <Settings>
-    <Setting Name="PasswordManagerDBConnection" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=PasswordManagerDB.mdf;Integrated Security=True</Value>
-    </Setting>
-    <Setting Name="PasswordManagerSQLiteDBConnection" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=|DataDirectory|bearpass.data</Value>
-    </Setting>
-  </Settings>
+  <Settings />
 </SettingsFile>

@@ -30,14 +30,14 @@ namespace PasswordManager.App
 
         private void PasswordGenerateOptions_Load(object sender, EventArgs e)
         {
-            AllowLowercaseCheckBox.Checked =passwordOptions.AllowUppercaseCharacters;
+            AllowLowercaseCheckBox.Checked =passwordOptions.AllowLowercaseCharacters;
             AllowUppercaseCheckBox.Checked =passwordOptions.AllowUppercaseCharacters;
             AllowNumberCheckBox.Checked =passwordOptions.AllowNumberCharacters;
             AllowSpecialCheckBox.Checked =passwordOptions.AllowSpecialCharacters;
             AllowUnderscoreCheckBox.Checked =passwordOptions.AllowUnderscoreCharacters;
             AllowSpaceCheckBox.Checked =passwordOptions.AllowSpaceCharacters;
 
-            RequireLowercaseCheckBox.Checked =passwordOptions.RequireUppercaseCharacters;
+            RequireLowercaseCheckBox.Checked =passwordOptions.RequireLowercaseCharacters;
             RequireUppercaseCheckBox.Checked =passwordOptions.RequireUppercaseCharacters;
             RequireNumberCheckBox.Checked =passwordOptions.RequireNumberCharacters;
             RequireSpecialCheckBox.Checked =passwordOptions.RequireSpecialCharacters;

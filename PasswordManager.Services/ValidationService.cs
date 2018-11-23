@@ -75,7 +75,7 @@ namespace PasswordManager.Services
         /// <returns>Boolean: True if Valid otherwise False.</returns>
         public bool Passwords(List<Password> passwords)
         {
-            if (passwords != null)
+            if (passwords != null)//I find this implementation to be stupid
             {
                 bool result = true;
 
@@ -128,20 +128,6 @@ namespace PasswordManager.Services
                     return true;
                 }
                 else return false;
-            }
-            else return false;
-        }
-
-        /// <summary>
-        /// Determines wether the supplied File path is valid.
-        /// </summary>
-        /// <param name="fileName">File Path be validated.</param>
-        /// <returns>Boolean: True if Valid otherwise False.</returns>
-        public bool File(string fileName)
-        {
-            if (Verifier.Text(fileName))
-            {
-                return System.IO.File.Exists(fileName);
             }
             else return false;
         }

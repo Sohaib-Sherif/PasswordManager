@@ -32,16 +32,16 @@ namespace PasswordManager.Data
         {
             if (Database.AddNewUser(user) > 0)
             {
-                user = Database.GetUserByEmail(user.Email);
+                user = Database.GetUserByEmail(user.Email);//why do it?
                 if (Database.AddSettingsByUserID(user.ID, settings) > 0)
                 {
                     if (Database.AddPasswordOptionsBySettingsID(Database.GetSettingsByUserID(user.ID).ID, passwordOptions) > 0)
                     {
-                        return 3;
+                        return 3;//added all three 
                     }
-                    else return 2;
+                    else return 2;//added just user and settings
                 }
-                else return 1;
+                else return 1;//added just the user
             }
             else return 0;
         }
@@ -53,7 +53,7 @@ namespace PasswordManager.Data
 
         public User LoginUser(User user)
         {
-            return Database.GetUserByEmail(user.Email);
+            return Database.GetUserByEmail(user.Email);//bad name method
         }
 
         public int UpdateUser(User user)

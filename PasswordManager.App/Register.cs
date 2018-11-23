@@ -54,7 +54,7 @@ namespace PasswordManager.App
                     User user = new User()
                     {
                         ID = 1, //this shit took 1 hour for me to find out. - temporary 
-                        Name = txtName.Text,
+                        Name = txtName.Text,//poor soul
                         Username = txtUsername.Text,
                         Email = txtEmail.Text,
                         Master = txtLoginPass.Text,
@@ -76,7 +76,7 @@ namespace PasswordManager.App
                         {
                             lblMassege.Text = "An unknown error occured. Please try again.";
 
-                            this.Hide();
+                            this.Hide();//why would it show dashboard if registration failed
                             Dashboard dashboard = new Dashboard(user);
                             dashboard.Show();
                         }

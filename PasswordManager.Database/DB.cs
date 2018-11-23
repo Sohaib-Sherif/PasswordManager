@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using PasswordManager.Entities;
 using System.Data.SqlClient;
 
-using System.Data.SQLite;
-
 namespace PasswordManager.Database
 {
     /// <summary>
@@ -21,7 +19,7 @@ namespace PasswordManager.Database
         protected DB()
         {
             //ConnectionString = Properties.Settings.Default["PasswordManagerDBConnection"].ToString();
-            ConnectionString = Properties.Settings.Default["PasswordManagerSQLiteDBConnection"].ToString();
+            //ConnectionString = Properties.Settings.Default["PasswordManagerSQLiteDBConnection"].ToString();
             //ConnectionString = Globals.DatabaseConnection.Instance().GetValue();
         }
 
@@ -34,7 +32,7 @@ namespace PasswordManager.Database
 
             return _instance;
         }
-        
+        /*
         /// <summary>
         /// Add New User with Settings and PasswordOptions
         /// </summary>
@@ -50,7 +48,7 @@ namespace PasswordManager.Database
             {
                 connection.Open();
 
-                SQLiteCommand command = connection.CreateCommand();
+                sqlCommand command = connection.CreateCommand();
                 SQLiteTransaction userTransaction = connection.BeginTransaction();
 
                 command.Connection = connection;
@@ -658,7 +656,7 @@ namespace PasswordManager.Database
             }
 
             return AffectedRows;
-        }
+        }*/
 
     }
 }

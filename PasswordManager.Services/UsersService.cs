@@ -59,10 +59,10 @@ namespace PasswordManager.Services
             return Task.Factory.StartNew(() =>
             {
                 if (ValidationService.Instance().User(user))
-                {
+                {// addina a new user with default settings
                     if (UsersData.Instance().AddNewUser(user, Globals.Defaults.Settings, Globals.Defaults.PasswordOptions) > 0)
                     {
-                        return LoginUser(user);
+                        return LoginUser(user);// why checking here?
                     }
                     else return null;
                 }

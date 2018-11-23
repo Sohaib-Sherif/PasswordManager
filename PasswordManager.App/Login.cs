@@ -49,8 +49,8 @@ namespace PasswordManager.App
                 }
                 else
                 {
-                    User user = new User()
-                    {
+                    User user = new User()//in my opinion there should be a useDAO that take a new user and
+                    {//insert it into the DB,plus the ID should be auto incremented
                         ID = 1, //temporaryID for Validation
                         Email = txtEmail.Text,
                         Master = txtLoginPass.Text
@@ -63,7 +63,7 @@ namespace PasswordManager.App
                     {
                         lblMassege.Text = "Login Successful.";
 
-                        this.Hide();
+                        this.Hide();//hide this form
                         Dashboard dashboard = new Dashboard(loginUser);
                         dashboard.Show();
                     }
