@@ -39,7 +39,7 @@ Catalog=PasswordManager;Integrated Security = true");
         /// <param name="settings">Settings Entity.</param>
         /// <param name="passwordOptions">PasswordOptions Entity.</param>
         /// <returns>Number of Rows Affected.</returns>
-        public int AddNewUser(User user)
+        public int AddNewUser(string[] userData)
         {
             int AffectedRows = -1;
 
@@ -55,10 +55,10 @@ Catalog=PasswordManager;Integrated Security = true");
                 {
                     //Adding New User Values
                     command.CommandText = "Insert into Users (Name, Username, Email, MasterPassword) values (@Name, @Username, @Email, @MasterPassword)";
-                    command.Parameters.AddWithValue("Name", user.Name);
-                    command.Parameters.AddWithValue("Username", user.Username);
-                    command.Parameters.AddWithValue("Email", user.Email);
-                    command.Parameters.AddWithValue("MasterPassword", user.Master);
+                    command.Parameters.AddWithValue("Name", userData[0]);
+                    command.Parameters.AddWithValue("Username", userData[1]);
+                    command.Parameters.AddWithValue("Email", userData[2]);
+                    command.Parameters.AddWithValue("MasterPassword", userData[3]);
 
                     //Add User to Database
                     AffectedRows = command.ExecuteNonQuery();

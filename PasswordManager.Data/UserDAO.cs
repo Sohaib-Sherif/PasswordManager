@@ -7,18 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PasswordManager.DAO
-{//should be renamed to UserDAO
+{
     public static class UserDAO
     {
         private static DB Database = DB.Instance();
 
 
-        public static int AddNewUser(User user, Settings settings, PasswordOptions passwordOptions)
+        public static int AddNewUser(string[] userData, Settings settings, PasswordOptions passwordOptions)
         {
-            if (Database.AddNewUser(user) > 0)
+            if (Database.AddNewUser(userData) > 0)
             {
-                user = Database.GetUserByEmail(user.Email);//why do it?
-                if (Database.AddSettingsByUserID(user.ID, settings) > 0)
+                User user = Database.GetUserByEmail(userData[2]);//the email is index 2,he used this method
+                if (Database.AddSettingsByUserID(user.ID, settings) > 0)//so he could get the ID
                 {
                     if (Database.AddPasswordOptionsBySettingsID(Database.GetSettingsByUserID(user.ID).ID, passwordOptions) > 0)
                     {
@@ -30,18 +30,26 @@ namespace PasswordManager.DAO
             }
             else return 0;
         }
-
-        public static User SelectUser(User user)
+		/// <summary>
+		/// gets the user by it's ID
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+        public static User SelectUser(User user)//not used
         {
             return Database.GetUserByID(user.ID);
         }
-
-        public static User LoginUser(User user)
+		/// <summary>
+		/// checks if there's already a user registered with that email address
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns></returns>
+        public static User GetRegisteredUser(string userEmail)//used in user service
         {
-            return Database.GetUserByEmail(user.Email);//bad name method
+            return Database.GetUserByEmail(userEmail);
         }
 
-        public static int UpdateUser(User user)
+        public static int UpdateUser(User user)//used in user service
         {
             return Database.UpdateUser(user);
         }

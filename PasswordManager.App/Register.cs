@@ -51,32 +51,22 @@ namespace PasswordManager.App
                 }
                 else
                 {
-                    User user = new User()
+                    if (!await UsersService.UserExistAsync(txtEmail.Text))
                     {
-                        ID = 1, //this shit took 1 hour for me to find out. - temporary 
-                        Name = txtName.Text,//poor soul
-                        Username = txtUsername.Text,
-                        Email = txtEmail.Text,
-                        Master = txtLoginPass.Text,
-                    };
-
-                    if (!await UsersService.UserExistAsync(user))
-                    {
-                        user = await UsersService.RegisterUserAsync(user);
-
+						string[] userData = new string[] 
+						{
+							txtName.Text,
+							txtUsername.Text,
+							txtEmail.Text,
+							txtLoginPass.Text
+						};
+                        User user = await UsersService.RegisterUserAsync(userData);
+						
                         if (user != null)
                         {
                             lblMassege.Text = "User Registered.";
 
                             this.Hide();
-                            Dashboard dashboard = new Dashboard(user);
-                            dashboard.Show();
-                        }
-                        else
-                        {
-                            lblMassege.Text = "An unknown error occured. Please try again.";
-
-                            this.Hide();//why would it show dashboard if registration failed
                             Dashboard dashboard = new Dashboard(user);
                             dashboard.Show();
                         }

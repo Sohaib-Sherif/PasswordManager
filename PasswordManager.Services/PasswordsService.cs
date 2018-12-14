@@ -1,4 +1,4 @@
-﻿using PasswordManager.Data;
+﻿using PasswordManager.DAO;
 using PasswordManager.Entities;
 using PasswordManager.Utilities;
 using System;
@@ -26,8 +26,8 @@ namespace PasswordManager.Services
             {
                 if (Validate.User(user))
                 {
-                    //List<Password> passwords = CryptoService.Decrypt(user, PasswordsData.Instance().GetUserPasswords(user));
-                    List<Password> passwords = PasswordsData.Instance().GetUserPasswords(user);
+                    //List<Password> passwords = CryptoService.Decrypt(user, PasswordDAO.Instance().GetUserPasswords(user));
+                    List<Password> passwords = PasswordDAO.GetUserPasswords(user);
 
                     if (passwords != null)//i am not using the validation service here because passwords are not yet decrypted and may return false when validation called -gul:0401171228
                     {
@@ -55,8 +55,8 @@ namespace PasswordManager.Services
         {
             if (Validate.User(user))
             {
-                //List<Password> passwords = CryptoService.Decrypt(user, PasswordsData.Instance().GetUserPasswords(user));
-                List<Password> passwords = PasswordsData.Instance().GetUserPasswords(user);
+                //List<Password> passwords = CryptoService.Decrypt(user, PasswordDAO.Instance().GetUserPasswords(user));
+                List<Password> passwords = PasswordDAO.GetUserPasswords(user);
 
                 if (passwords != null)//i am not using the validation service here because passwords are not yet decrypted and may return false when validation called -gul:0401171228
                 {
@@ -84,7 +84,7 @@ namespace PasswordManager.Services
             {
                 if (Validate.User(user) && Validate.Password(password))
                 {
-                    if (PasswordsData.Instance().SaveNewUserPassword(user, CryptoService.EncryptUserPassword(user, password)) > 0)
+                    if (PasswordDAO.SaveNewUserPassword(user, CryptoService.EncryptUserPassword(user, password)) > 0)
                     {
                         return password;
                     }
@@ -106,7 +106,7 @@ namespace PasswordManager.Services
             {
                 if (Validate.User(user) && Validate.Passwords(passwords))
                 {
-                    if (PasswordsData.Instance().SaveNewUserPasswords(user, CryptoService.EncryptUserPasswords(user, passwords)) > 0)
+                    if (PasswordDAO.SaveNewUserPasswords(user, CryptoService.EncryptUserPasswords(user, passwords)) > 0)
                     {
                         return passwords;
                     }
@@ -128,7 +128,7 @@ namespace PasswordManager.Services
             {
                 if (Validate.User(user) && Validate.Password(password))
                 {
-                    if (PasswordsData.Instance().UpdateUserPassword(user, CryptoService.EncryptUserPassword(user, password)) > 0)
+                    if (PasswordDAO.UpdateUserPassword(user, CryptoService.EncryptUserPassword(user, password)) > 0)
                     {
                         return password;
                     }
@@ -150,7 +150,7 @@ namespace PasswordManager.Services
             {
                 if (Validate.User(user) && Validate.Passwords(passwords))
                 {
-                    if (PasswordsData.Instance().UpdateUserPasswords(user, CryptoService.EncryptUserPasswords(user, passwords)) > 0)
+                    if (PasswordDAO.UpdateUserPasswords(user, CryptoService.EncryptUserPasswords(user, passwords)) > 0)
                     {
                         return passwords;
                     }
@@ -177,7 +177,7 @@ namespace PasswordManager.Services
                     user.Master = NewMaster;
                     user = UsersService.UpdateUser(user);
                     
-                    if (PasswordsData.Instance().UpdateUserPasswords(user, CryptoService.EncryptUserPasswords(user, allPasswords)) > 0)
+                    if (PasswordDAO.UpdateUserPasswords(user, CryptoService.EncryptUserPasswords(user, allPasswords)) > 0)
                     {
                         return user;
                     }
@@ -200,7 +200,7 @@ namespace PasswordManager.Services
                 if (Validate.User(user) && Validate.Password(password))
                 {
                     /* No need for decrypting password. We only need ID in the Delete method for work */
-                    if (PasswordsData.Instance().DeleteUserPassword(user, password) > 0)
+                    if (PasswordDAO.DeleteUserPassword(user, password) > 0)
                         return true;
                     else return false;
                 }
@@ -284,7 +284,7 @@ namespace PasswordManager.Services
 
                 if (Validate.User(user))
                 {
-                    passwordOptions = PasswordOptionsData.Instance().GetPasswordOptionsBySettings(user.Settings);
+                    passwordOptions = PasswordOptionsDAO.GetPasswordOptionsBySettings(user.Settings);
                 }
                 else passwordOptions = Globals.Defaults.PasswordOptions;
 

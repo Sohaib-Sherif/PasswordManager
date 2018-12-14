@@ -1,4 +1,4 @@
-﻿using PasswordManager.Data;
+﻿using PasswordManager.DAO;
 using PasswordManager.Entities;
 using PasswordManager.Utilities;
 using System;
@@ -26,7 +26,7 @@ namespace PasswordManager.Services
             {
                 if (Validate.User(user))
                 {
-                    return SettingsData.Instance().GetUserSettings(user);
+                    return SettingsDAO.GetUserSettings(user);
                 }
                 else return null;
             });
@@ -44,7 +44,7 @@ namespace PasswordManager.Services
             {
                 if (Validate.User(user) && Validate.Settings(settings))
                 {
-                    if (SettingsData.Instance().UpdateUserSettings(user, settings) > 0)
+                    if (SettingsDAO.UpdateUserSettings(user, settings) > 0)
                     {
                         user.Settings = settings;
 
@@ -67,7 +67,7 @@ namespace PasswordManager.Services
             {
                 if (Validate.Settings(settings))
                 {
-                    return PasswordOptionsData.Instance().GetPasswordOptionsBySettings(settings);
+                    return PasswordOptionsDAO.GetPasswordOptionsBySettings(settings);
                 }
                 else return null;
             });
@@ -86,7 +86,7 @@ namespace PasswordManager.Services
             {
                 if (Validate.User(user) && Validate.Settings(settings) && Validate.PasswordOptions(passwordOptions))
                 {
-                    if (PasswordOptionsData.Instance().UpdatePasswordOptionsBySettings(settings, passwordOptions) > 0)
+                    if (PasswordOptionsDAO.UpdatePasswordOptionsBySettings(settings, passwordOptions) > 0)
                     {
                         user.Settings.PasswordOptions = passwordOptions;
                         return user;

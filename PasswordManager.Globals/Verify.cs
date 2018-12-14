@@ -27,7 +27,7 @@ namespace PasswordManager.Globals
             }
             else return true;
         }
-
+		// not needed in my opinion
         public static bool ID(int ID)
         {
             //this need a better implementation. -gul:0301171550

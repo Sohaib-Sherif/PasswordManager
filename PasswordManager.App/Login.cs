@@ -49,21 +49,14 @@ namespace PasswordManager.App
                 }
                 else
                 {
-                    User user = new User()//in my opinion there should be a useDAO that take a new user and
-                    {//insert it into the DB,plus the ID should be auto incremented
-                        ID = 1, //temporaryID for Validation
-                        Email = txtEmail.Text,
-                        Master = txtLoginPass.Text
-                    };
-
                     picboxLoading.Show();
 
-                    User loginUser = await UsersService.LoginUserAsync(user);
+                    User loginUser = await UsersService.LoginUserAsync(txtEmail.Text, txtLoginPass.Text);
                     if (loginUser != null)
                     {
                         lblMassege.Text = "Login Successful.";
 
-                        this.Hide();//hide this form
+                        this.Hide();
                         Dashboard dashboard = new Dashboard(loginUser);
                         dashboard.Show();
                     }
@@ -107,7 +100,7 @@ namespace PasswordManager.App
         }
 
         private void lblForgotPassword_Click(object sender, EventArgs e)
-        {
+        {//should send the password to the person's email
             Messenger.Show("Sorry! There is no way you can access your passwords without your Master Password.", "Warning");
         }
     }
