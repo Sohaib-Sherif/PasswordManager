@@ -1,5 +1,4 @@
 ﻿using PasswordManager.Entities;
-using PasswordManager.Filer;
 using PasswordManager.Services;
 using PasswordManager.Theme;
 using System;
@@ -79,7 +78,7 @@ namespace PasswordManager.App
 
                 try
                 {
-                    ShowPasswords(await PasswordsService.Instance().SearchUserPasswordsAsync(user, SearchTerm, LooksFor, Options));
+                    ShowPasswords(await PasswordsService.SearchUserPasswordsAsync(user, SearchTerm, LooksFor, Options));
                 }
                 catch (Exception ex)
                 {
@@ -96,7 +95,7 @@ namespace PasswordManager.App
             {
                 try
                 {
-                    user.Passwords = await PasswordsService.Instance().GetAllUserPasswordsAsync(user);
+                    user.Passwords = await PasswordsService.GetAllUserPasswordsAsync(user);
                     ShowPasswords(user.Passwords);
                     PasswordsGridView.Focus();
                     PasswordsGridView.CurrentCell = PasswordsGridView.Rows[PasswordsGridView.Rows.Count - 1].Cells[2];
@@ -116,7 +115,7 @@ namespace PasswordManager.App
             //weird but working :p
             try
             {
-                ShowPasswords(await PasswordsService.Instance().GetAllUserPasswordsAsync(user));
+                ShowPasswords(await PasswordsService.GetAllUserPasswordsAsync(user));
             }
             catch (Exception ex)
             {
@@ -124,58 +123,7 @@ namespace PasswordManager.App
             }
         }
 
-        private async void btnImportPasswords_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Title = "Import Passwords";
-            ofd.DefaultExt = "bpf";
-            ofd.Filter = Globals.Information.AppName + " files (*.bpf)|*.bpf|All files (*.*)|*.*";
-            ofd.FilterIndex = 1;
-            ofd.CheckPathExists = true;
-            ofd.RestoreDirectory = true;
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                List<Password> importedPasswords = await BearPassService.Instance().ImportPasswordsAsync(ofd.FileName);
-                
-                if (importedPasswords != null)
-                {
-                    if (Messenger.Confirm("The file contains " + importedPasswords.Count + " passwords. Are you sure you want to import these passwords to your account?"))
-                    {
-                        try
-                        {
-                            await PasswordsService.Instance().SaveNewUserPasswordsAsync(user, CryptoService.Instance().DecryptUserPasswords(user, importedPasswords));
-                        }
-                        catch
-                        {
-                            Messenger.Show("Unable to import passwords. Either these passwords were encrypted with a different Master Password than yours or you changed your Master Password.", "Error");
-                        }
-                        ShowPasswords(await PasswordsService.Instance().GetAllUserPasswordsAsync(user));
-                    }
-                }
-            }
-        }
-
-        private async void btnExportPasswords_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Title = "Export Passwords";
-            sfd.DefaultExt = "bpf";
-            sfd.Filter = Globals.Information.AppName + " files (*.bpf)|*.bpf|All files (*.*)|*.*";
-            sfd.FilterIndex = 1;
-            sfd.CheckPathExists = true;
-            sfd.RestoreDirectory = true;
-
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                if (await BearPassService.Instance().ExportPasswordsAsync(CryptoService.Instance().EncryptUserPasswords(user, user.Passwords), sfd.FileName))
-                {
-                    Messenger.Show("Passwords exported to " + sfd.FileName + " file.", "Info");
-                }
-            }
-        }
-
-        private void btnGuide_Click(object sender, EventArgs e)
+		private void btnGuide_Click(object sender, EventArgs e)
         {
             Guide guide = new Guide();
 
@@ -223,7 +171,7 @@ namespace PasswordManager.App
         }
         public async void ShowPasswords(User user)
         {
-            ShowPasswords(await PasswordsService.Instance().GetAllUserPasswordsAsync(user));
+            ShowPasswords(await PasswordsService.GetAllUserPasswordsAsync(user));
         }
         public void ShowPasswords(List<Password> Passwords)
         {
@@ -272,7 +220,7 @@ namespace PasswordManager.App
 
                     if (updatePasswordForm.ShowDialog() == DialogResult.OK)
                     {
-                        user.Passwords = await PasswordsService.Instance().GetAllUserPasswordsAsync(user);
+                        user.Passwords = await PasswordsService.GetAllUserPasswordsAsync(user);
                         DisplayMassege("Password Updated.", Globals.Defaults.WarningColor);
                         ShowPasswords(user.Passwords);
                     }
@@ -284,11 +232,11 @@ namespace PasswordManager.App
                         int ID = Convert.ToInt32(PasswordsGridView.Rows[e.RowIndex].Cells["ColID"].Value.ToString());
 
                         //this is necessary to get all passwords before deleting.
-                        user.Passwords = await PasswordsService.Instance().GetAllUserPasswordsAsync(user);
+                        user.Passwords = await PasswordsService.GetAllUserPasswordsAsync(user);
 
                         Password passwordToDelete =  user.Passwords.Where(p => p.ID == ID).FirstOrDefault();
 
-                        if (await PasswordsService.Instance().RemoveUserPasswordAsync(user, passwordToDelete))
+                        if (await PasswordsService.RemoveUserPasswordAsync(user, passwordToDelete))
                         {
                             PasswordsGridView.Rows.RemoveAt(e.RowIndex);
                             DisplayMassege("Password Deleted.", Globals.Defaults.WarningColor);

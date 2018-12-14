@@ -52,19 +52,19 @@ namespace PasswordManager.App
         
         private void txtName_TextChanged(object sender, EventArgs e)
         {
-            if (Verifier.Text(txtName.Text.ToString()))
+            if (Verify.Text(txtName.Text.ToString()))
             user.Name = txtName.Text.ToString();
         }
 
         private void txtEmail_TextChanged(object sender, EventArgs e)
         {
-            if (Verifier.Text(txtEmail.Text.ToString()))
+            if (Verify.Text(txtEmail.Text.ToString()))
                 user.Email = txtEmail.Text.ToString();
         }
 
         private void txtUsername_TextChanged(object sender, EventArgs e)
         {
-            if (Verifier.Text(txtUsername.Text.ToString()))
+            if (Verify.Text(txtUsername.Text.ToString()))
                 user.Username = txtUsername.Text.ToString();
         }
 
@@ -77,7 +77,7 @@ namespace PasswordManager.App
         {
             //if (user.Settings.DifferentMaster)
             //{
-            //    if (Verifier.Text(txtMaster.Text.ToString()))
+            //    if (Verify.Text(txtMaster.Text.ToString()))
             //        user.Settings.Master = txtMaster.Text.ToString();
             //}
         }
@@ -117,9 +117,9 @@ namespace PasswordManager.App
         {
             try
             {
-                UsersService.Instance().UpdateUserAsync(user);
+                UsersService.UpdateUserAsync(user);
 
-                SettingsService.Instance().UpdateUserSettingsAsync(user, user.Settings);
+                SettingsService.UpdateUserSettingsAsync(user, user.Settings);
             }
             catch (Exception ex)
             {

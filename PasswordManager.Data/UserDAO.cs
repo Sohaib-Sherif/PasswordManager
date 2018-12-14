@@ -6,29 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PasswordManager.Data
-{
-    public class UsersData
+namespace PasswordManager.DAO
+{//should be renamed to UserDAO
+    public static class UserDAO
     {
-        private DB Database = DB.Instance();
+        private static DB Database = DB.Instance();
 
-        private static UsersData _instance;
 
-        protected UsersData()
-        {
-        }
-
-        public static UsersData Instance()
-        {
-            if (_instance == null)
-            {
-                _instance = new UsersData();
-            }
-
-            return _instance;
-        }
-
-        public int AddNewUser(User user, Settings settings, PasswordOptions passwordOptions)
+        public static int AddNewUser(User user, Settings settings, PasswordOptions passwordOptions)
         {
             if (Database.AddNewUser(user) > 0)
             {
@@ -46,17 +31,17 @@ namespace PasswordManager.Data
             else return 0;
         }
 
-        public User SelectUser(User user)
+        public static User SelectUser(User user)
         {
             return Database.GetUserByID(user.ID);
         }
 
-        public User LoginUser(User user)
+        public static User LoginUser(User user)
         {
             return Database.GetUserByEmail(user.Email);//bad name method
         }
 
-        public int UpdateUser(User user)
+        public static int UpdateUser(User user)
         {
             return Database.UpdateUser(user);
         }

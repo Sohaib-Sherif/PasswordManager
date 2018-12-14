@@ -39,7 +39,7 @@ namespace PasswordManager.App
 
         private bool IsEnable()
         {
-            if (Verifier.Text(txtName.Text) && Verifier.Text(txtPassword.Text) && Verifier.Email(txtEmail.Text))
+            if (Verify.Text(txtName.Text) && Verify.Text(txtPassword.Text) && Verify.Email(txtEmail.Text))
                 return true;
             return false;
         }
@@ -51,13 +51,13 @@ namespace PasswordManager.App
             if (passwordGenerateOptionsForm.ShowDialog() == DialogResult.OK)
             {
                 user.Settings.PasswordOptions = passwordGenerateOptionsForm.passwordOptions;
-                txtPassword.Text = await PasswordsService.Instance().GeneratePasswordAsync(user);
+                txtPassword.Text = await PasswordsService.GeneratePasswordAsync(user);
             }
         }
 
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
-            txtPassword.Text = await PasswordsService.Instance().GeneratePasswordAsync(user);
+            txtPassword.Text = await PasswordsService.GeneratePasswordAsync(user);
         }
         
         private async void btnSave_Click(object sender, EventArgs e)
@@ -78,7 +78,7 @@ namespace PasswordManager.App
 
             try
             {
-                await PasswordsService.Instance().SaveNewUserPasswordAsync(user, newPassword);
+                await PasswordsService.SaveNewUserPasswordAsync(user, newPassword);
             }
             catch (Exception ex)
             {

@@ -44,7 +44,7 @@ namespace PasswordManager.App
 
             try
             {
-                await PasswordsService.Instance().UpdateUserPasswordAsync(user, password);
+                await PasswordsService.UpdateUserPasswordAsync(user, password);
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace PasswordManager.App
 
         private bool IsEnable()
         {
-            if (Verifier.Text(txtName.Text) && Verifier.Text(txtPassword.Text))
+            if (Verify.Text(txtName.Text) && Verify.Text(txtPassword.Text))
                 return true;
             return false;
         }
@@ -68,7 +68,7 @@ namespace PasswordManager.App
         {
             try
             {
-                txtPassword.Text = await PasswordsService.Instance().GeneratePasswordAsync(user);
+                txtPassword.Text = await PasswordsService.GeneratePasswordAsync(user);
             }
             catch (Exception ex)
             {
@@ -85,7 +85,7 @@ namespace PasswordManager.App
                 if (passwordGenerateOptionsForm.ShowDialog() == DialogResult.OK)
                 {
                     user.Settings.PasswordOptions = passwordGenerateOptionsForm.passwordOptions;
-                    txtPassword.Text = await PasswordsService.Instance().GeneratePasswordAsync(user);
+                    txtPassword.Text = await PasswordsService.GeneratePasswordAsync(user);
                 }
             }
             catch (Exception ex)

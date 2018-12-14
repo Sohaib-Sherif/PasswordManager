@@ -41,8 +41,6 @@
 			this.btnLogout = new System.Windows.Forms.Button();
 			this.btnAbout = new System.Windows.Forms.Button();
 			this.btnSettings = new System.Windows.Forms.Button();
-			this.btnExportPasswords = new System.Windows.Forms.Button();
-			this.btnImportPasswords = new System.Windows.Forms.Button();
 			this.btnNewPassword = new System.Windows.Forms.Button();
 			this.btnMasterPassword = new System.Windows.Forms.Button();
 			this.btnTitle = new System.Windows.Forms.Button();
@@ -76,8 +74,6 @@
 			this.MenuPanel.Controls.Add(this.btnLogout);
 			this.MenuPanel.Controls.Add(this.btnAbout);
 			this.MenuPanel.Controls.Add(this.btnSettings);
-			this.MenuPanel.Controls.Add(this.btnExportPasswords);
-			this.MenuPanel.Controls.Add(this.btnImportPasswords);
 			this.MenuPanel.Controls.Add(this.btnNewPassword);
 			this.MenuPanel.Controls.Add(this.btnMasterPassword);
 			this.MenuPanel.Controls.Add(this.btnTitle);
@@ -208,50 +204,6 @@
 			this.btnSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.btnSettings.UseVisualStyleBackColor = false;
 			this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-			// 
-			// btnExportPasswords
-			// 
-			this.btnExportPasswords.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnExportPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(140)))), ((int)(((byte)(235)))));
-			this.btnExportPasswords.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.btnExportPasswords.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btnExportPasswords.FlatAppearance.BorderSize = 0;
-			this.btnExportPasswords.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnExportPasswords.Font = new System.Drawing.Font("Segoe UI Semibold", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnExportPasswords.ForeColor = System.Drawing.Color.White;
-			this.btnExportPasswords.Image = global::PasswordManager.App.Properties.Resources.password_export;
-			this.btnExportPasswords.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnExportPasswords.Location = new System.Drawing.Point(9, 314);
-			this.btnExportPasswords.Name = "btnExportPasswords";
-			this.btnExportPasswords.Size = new System.Drawing.Size(207, 50);
-			this.btnExportPasswords.TabIndex = 11;
-			this.btnExportPasswords.Text = "          Export Passwords";
-			this.btnExportPasswords.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnExportPasswords.UseVisualStyleBackColor = false;
-			this.btnExportPasswords.Click += new System.EventHandler(this.btnExportPasswords_Click);
-			// 
-			// btnImportPasswords
-			// 
-			this.btnImportPasswords.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnImportPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(140)))), ((int)(((byte)(235)))));
-			this.btnImportPasswords.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.btnImportPasswords.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.btnImportPasswords.FlatAppearance.BorderSize = 0;
-			this.btnImportPasswords.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnImportPasswords.Font = new System.Drawing.Font("Segoe UI Semibold", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnImportPasswords.ForeColor = System.Drawing.Color.White;
-			this.btnImportPasswords.Image = global::PasswordManager.App.Properties.Resources.password_import;
-			this.btnImportPasswords.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnImportPasswords.Location = new System.Drawing.Point(9, 258);
-			this.btnImportPasswords.Name = "btnImportPasswords";
-			this.btnImportPasswords.Size = new System.Drawing.Size(207, 50);
-			this.btnImportPasswords.TabIndex = 10;
-			this.btnImportPasswords.Text = "          Import Passwords";
-			this.btnImportPasswords.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnImportPasswords.UseVisualStyleBackColor = false;
-			this.btnImportPasswords.Click += new System.EventHandler(this.btnImportPasswords_Click);
 			// 
 			// btnNewPassword
 			// 
@@ -542,8 +494,6 @@
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn2;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn3;
-        private System.Windows.Forms.Button btnExportPasswords;
-        private System.Windows.Forms.Button btnImportPasswords;
         private System.Windows.Forms.Button btnNewPassword;
         private System.Windows.Forms.Button btnSearchPassword;
         private System.Windows.Forms.Button btnLogout;

@@ -1,5 +1,6 @@
-﻿using PasswordManager.Data;
+﻿using PasswordManager.DAO;
 using PasswordManager.Entities;
+using PasswordManager.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,36 +13,21 @@ namespace PasswordManager.Services
     /// <summary>
     /// Provides access to User related objects and data.
     /// </summary>
-    public class UsersService
+    public static class UsersService
     {
-        private static UsersService _instance;
-
-        protected UsersService()
-        {
-        }
-
-        public static UsersService Instance()
-        {
-            if (_instance == null)
-            {
-                _instance = new UsersService();
-            }
-
-            return _instance;
-        }
 
         /// <summary>
         /// Determines wether User already exists or not.
         /// </summary>
         /// <param name="user">User to check.</param>
         /// <returns>Boolean: True if User exists, False if not.</returns>
-        public Task<bool> UserExistAsync(User user)
+        public static Task<bool> UserExistAsync(User user)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user))
+                if (Validate.User(user))
                 {
-                    if (UsersData.Instance().LoginUser(user) != null)
+                    if (UserDAO.LoginUser(user) != null)
                         return true;
                     else return false;
                 }
@@ -54,13 +40,13 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="user">User to be registered.</param>
         /// <returns>User: The newly registered user with Default Settings.</returns>
-        public Task<User> RegisterUserAsync(User user)
+        public static Task<User> RegisterUserAsync(User user)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user))
+                if (Validate.User(user))
                 {// addina a new user with default settings
-                    if (UsersData.Instance().AddNewUser(user, Globals.Defaults.Settings, Globals.Defaults.PasswordOptions) > 0)
+                    if (UserDAO.AddNewUser(user, Globals.Defaults.Settings, Globals.Defaults.PasswordOptions) > 0)
                     {
                         return LoginUser(user);// why checking here?
                     }
@@ -75,14 +61,14 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="user">User to be Login.</param>
         /// <returns>User: The logged in User.</returns>
-        public Task<User> LoginUserAsync(User user)
+        public static Task<User> LoginUserAsync(User user)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user))
+                if (Validate.User(user))
                 {
-                    User UserFromDB = UsersData.Instance().LoginUser(user);
-                    if (ValidationService.Instance().User(UserFromDB) && PasswordsService.Instance().IsSame(UserFromDB.Master, user.Master))
+                    User UserFromDB = UserDAO.LoginUser(user);
+                    if (Validate.User(UserFromDB) && PasswordsService.IsSame(UserFromDB.Master, user.Master))
                     {
                         return PopulateUserData(UserFromDB);
                     }
@@ -97,12 +83,12 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="user">User to be Login.</param>
         /// <returns>User: The logged in User.</returns>
-        public User LoginUser(User user)
+        public static User LoginUser(User user)
         {
-            if (ValidationService.Instance().User(user))
+            if (Validate.User(user))
             {
-                User UserFromDB = UsersData.Instance().LoginUser(user);
-                if (ValidationService.Instance().User(UserFromDB) && PasswordsService.Instance().IsSame(UserFromDB.Master, user.Master))
+                User UserFromDB = UserDAO.LoginUser(user);
+                if (Validate.User(UserFromDB) && PasswordsService.IsSame(UserFromDB.Master, user.Master))
                 {
                     return PopulateUserData(UserFromDB);
                 }
@@ -116,13 +102,13 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="user">User to be updated.</param>
         /// <returns>User: updated User.</returns>
-        public Task<User> UpdateUserAsync(User user)
+        public static Task<User> UpdateUserAsync(User user)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user))
+                if (Validate.User(user))
                 {
-                    if (UsersData.Instance().UpdateUser(user) > 0)
+                    if (UserDAO.UpdateUser(user) > 0)
                     {
                         return user;
                     }
@@ -138,11 +124,11 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="user">User to be updated.</param>
         /// <returns>User: updated User.</returns>
-        public User UpdateUser(User user)
+        public static User UpdateUser(User user)
         {
-            if (ValidationService.Instance().User(user))
+            if (Validate.User(user))
                 {
-                    if (UsersData.Instance().UpdateUser(user) > 0)
+                    if (UserDAO.UpdateUser(user) > 0)
                     {
                         return user;
                     }
@@ -156,15 +142,15 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="user">User to be populated.</param>
         /// <returns>User: User with its Passwords and Settings.</returns>
-        public Task<User> PopulateUserDataAsync(User user)
+        public static Task<User> PopulateUserDataAsync(User user)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user))
+                if (Validate.User(user))
                 {
-                    user.Passwords = CryptoService.Instance().DecryptUserPasswords(user, PasswordsData.Instance().GetUserPasswords(user));
-                    user.Settings = SettingsData.Instance().GetUserSettings(user);
-                    user.Settings.PasswordOptions = PasswordOptionsData.Instance().GetPasswordOptionsBySettings(user.Settings);
+                    user.Passwords = CryptoService.DecryptUserPasswords(user, PasswordDAO.GetUserPasswords(user));
+                    user.Settings = SettingsDAO.GetUserSettings(user);
+                    user.Settings.PasswordOptions = PasswordOptionsDAO.GetPasswordOptionsBySettings(user.Settings);
 
                     return user;
                 }
@@ -177,14 +163,14 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="user">User to be populated.</param>
         /// <returns>User: User with its Passwords and Settings.</returns>
-        public User PopulateUserData(User user)
+        public static User PopulateUserData(User user)
         {
-            if (ValidationService.Instance().User(user))
+            if (Validate.User(user))
             {
-                user.Passwords = CryptoService.Instance().DecryptUserPasswords(user, PasswordsData.Instance().GetUserPasswords(user));
+                user.Passwords = CryptoService.DecryptUserPasswords(user, PasswordDAO.GetUserPasswords(user));
                 //user.Settings = (SettingsData.Instance().GetUserSettings(user) == null) ? Globals.Defaults.Settings : SettingsData.Instance().GetUserSettings(user);
-                user.Settings = SettingsData.Instance().GetUserSettings(user);
-                user.Settings.PasswordOptions = PasswordOptionsData.Instance().GetPasswordOptionsBySettings(user.Settings);
+                user.Settings = SettingsDAO.GetUserSettings(user);
+                user.Settings.PasswordOptions = PasswordOptionsDAO.GetPasswordOptionsBySettings(user.Settings);
 
                 return user;
             }

@@ -1,5 +1,6 @@
 ﻿using PasswordManager.Data;
 using PasswordManager.Entities;
+using PasswordManager.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,43 +12,28 @@ namespace PasswordManager.Services
     /// <summary>
     /// Provides access to User related Passwords and data.
     /// </summary>
-    public class PasswordsService
+    public static class PasswordsService
     {
-        private static PasswordsService _instance;
-
-        protected PasswordsService()
-        {
-        }
-
-        public static PasswordsService Instance()
-        {
-            if (_instance == null)
-            {
-                _instance = new PasswordsService();
-            }
-
-            return _instance;
-        }
 
         /// <summary>
         /// Gets All Passwords for the Supplied User.
         /// </summary>
         /// <param name="user">User for whom Passwords are required.</param>
         /// <returns>List of Passwords for the supplied User.</returns>
-        public Task<List<Password>> GetAllUserPasswordsAsync(User user)
+        public static Task<List<Password>> GetAllUserPasswordsAsync(User user)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user))
+                if (Validate.User(user))
                 {
-                    //List<Password> passwords = CryptoService.Instance().Decrypt(user, PasswordsData.Instance().GetUserPasswords(user));
+                    //List<Password> passwords = CryptoService.Decrypt(user, PasswordsData.Instance().GetUserPasswords(user));
                     List<Password> passwords = PasswordsData.Instance().GetUserPasswords(user);
 
                     if (passwords != null)//i am not using the validation service here because passwords are not yet decrypted and may return false when validation called -gul:0401171228
                     {
-                        passwords = CryptoService.Instance().DecryptUserPasswords(user, passwords);
+                        passwords = CryptoService.DecryptUserPasswords(user, passwords);
 
-                        if (ValidationService.Instance().Passwords(passwords))
+                        if (Validate.Passwords(passwords))
                         {
                             return passwords;
                         }
@@ -65,18 +51,18 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="user">User for whom Passwords are required.</param>
         /// <returns>List of Passwords for the supplied User.</returns>
-        private List<Password> GetAllUserPasswords(User user)
+        private static List<Password> GetAllUserPasswords(User user)
         {
-            if (ValidationService.Instance().User(user))
+            if (Validate.User(user))
             {
-                //List<Password> passwords = CryptoService.Instance().Decrypt(user, PasswordsData.Instance().GetUserPasswords(user));
+                //List<Password> passwords = CryptoService.Decrypt(user, PasswordsData.Instance().GetUserPasswords(user));
                 List<Password> passwords = PasswordsData.Instance().GetUserPasswords(user);
 
                 if (passwords != null)//i am not using the validation service here because passwords are not yet decrypted and may return false when validation called -gul:0401171228
                 {
-                    passwords = CryptoService.Instance().DecryptUserPasswords(user, passwords);
+                    passwords = CryptoService.DecryptUserPasswords(user, passwords);
 
-                    if (ValidationService.Instance().Passwords(passwords))
+                    if (Validate.Passwords(passwords))
                     {
                         return passwords;
                     }
@@ -92,13 +78,13 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom Password is to be stored.</param>
         /// <param name="password">Password to be saved.</param>
         /// <returns>Password: The newly saved Password.</returns>
-        public Task<Password> SaveNewUserPasswordAsync(User user, Password password)
+        public static Task<Password> SaveNewUserPasswordAsync(User user, Password password)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user) && ValidationService.Instance().Password(password))
+                if (Validate.User(user) && Validate.Password(password))
                 {
-                    if (PasswordsData.Instance().SaveNewUserPassword(user, CryptoService.Instance().EncryptUserPassword(user, password)) > 0)
+                    if (PasswordsData.Instance().SaveNewUserPassword(user, CryptoService.EncryptUserPassword(user, password)) > 0)
                     {
                         return password;
                     }
@@ -114,13 +100,13 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom Password is to be stored.</param>
         /// <param name="passwords">Passwords List to be saved.</param>
         /// <returns>List of Password: The newly saved Passwords.</returns>
-        public Task<List<Password>> SaveNewUserPasswordsAsync(User user, List<Password> passwords)
+        public static Task<List<Password>> SaveNewUserPasswordsAsync(User user, List<Password> passwords)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user) && ValidationService.Instance().Passwords(passwords))
+                if (Validate.User(user) && Validate.Passwords(passwords))
                 {
-                    if (PasswordsData.Instance().SaveNewUserPasswords(user, CryptoService.Instance().EncryptUserPasswords(user, passwords)) > 0)
+                    if (PasswordsData.Instance().SaveNewUserPasswords(user, CryptoService.EncryptUserPasswords(user, passwords)) > 0)
                     {
                         return passwords;
                     }
@@ -136,13 +122,13 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be updated.</param>
         /// <param name="password">Password to be updated.</param>
         /// <returns>Password: The updated password.</returns>
-        public Task<Password> UpdateUserPasswordAsync(User user, Password password)
+        public static Task<Password> UpdateUserPasswordAsync(User user, Password password)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user) && ValidationService.Instance().Password(password))
+                if (Validate.User(user) && Validate.Password(password))
                 {
-                    if (PasswordsData.Instance().UpdateUserPassword(user, CryptoService.Instance().EncryptUserPassword(user, password)) > 0)
+                    if (PasswordsData.Instance().UpdateUserPassword(user, CryptoService.EncryptUserPassword(user, password)) > 0)
                     {
                         return password;
                     }
@@ -158,13 +144,13 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be updated.</param>
         /// <param name="passwords">List of Passwords to be updated.</param>
         /// <returns>List of Password: The updated passwords.</returns>
-        public Task<List<Password>> UpdateUserPasswordsAsync(User user, List<Password> passwords)
+        public static Task<List<Password>> UpdateUserPasswordsAsync(User user, List<Password> passwords)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user) && ValidationService.Instance().Passwords(passwords))
+                if (Validate.User(user) && Validate.Passwords(passwords))
                 {
-                    if (PasswordsData.Instance().UpdateUserPasswords(user, CryptoService.Instance().EncryptUserPasswords(user, passwords)) > 0)
+                    if (PasswordsData.Instance().UpdateUserPasswords(user, CryptoService.EncryptUserPasswords(user, passwords)) > 0)
                     {
                         return passwords;
                     }
@@ -180,18 +166,18 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be updated.</param>
         /// <param name="passwords">List of Passwords to be updated.</param>
         /// <returns>List of Password: The updated passwords.</returns>
-        public Task<User> ChangeMasterEncryption(User user, string NewMaster)
+        public static Task<User> ChangeMasterEncryption(User user, string NewMaster)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user))
+                if (Validate.User(user))
                 {
                     List<Password> allPasswords = GetAllUserPasswords(user);
                     
                     user.Master = NewMaster;
-                    user = UsersService.Instance().UpdateUser(user);
+                    user = UsersService.UpdateUser(user);
                     
-                    if (PasswordsData.Instance().UpdateUserPasswords(user, CryptoService.Instance().EncryptUserPasswords(user, allPasswords)) > 0)
+                    if (PasswordsData.Instance().UpdateUserPasswords(user, CryptoService.EncryptUserPasswords(user, allPasswords)) > 0)
                     {
                         return user;
                     }
@@ -207,11 +193,11 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom Password is to be removed.</param>
         /// <param name="password">Password to be removed.</param>
         /// <returns>Boolean: True if Password Deleted otherwise False.</returns>
-        public Task<bool> RemoveUserPasswordAsync(User user, Password password)
+        public static Task<bool> RemoveUserPasswordAsync(User user, Password password)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (ValidationService.Instance().User(user) && ValidationService.Instance().Password(password))
+                if (Validate.User(user) && Validate.Password(password))
                 {
                     /* No need for decrypting password. We only need ID in the Delete method for work */
                     if (PasswordsData.Instance().DeleteUserPassword(user, password) > 0)
@@ -230,14 +216,14 @@ namespace PasswordManager.Services
         /// <param name="LooksFor">Looks for Password Name, Email or Username</param>
         /// <param name="Options">Options for Search Keywords Matched either Equals or Contains </param>
         /// <returns>List of Password: Passwords matching the search criteria.</returns>
-        public Task<List<Password>> SearchUserPasswordsAsync(User user, string Search, string LooksFor, string Options)
+        public static Task<List<Password>> SearchUserPasswordsAsync(User user, string Search, string LooksFor, string Options)
         {
             //we can send the search query to database -gul:0301171513
 
             return Task.Factory.StartNew(() =>
             {
                 List<Password> AllPasswords = GetAllUserPasswords(user);
-                if (ValidationService.Instance().Passwords(AllPasswords))
+                if (Validate.Passwords(AllPasswords))
                 {
                     List<Password> searchedPasswords = null;
 
@@ -290,13 +276,13 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="user">User whose PasswordOptions settings is used.</param>
         /// <returns>String: Random Characters to be used as Password.</returns>
-        public Task<string> GeneratePasswordAsync(User user)
+        public static Task<string> GeneratePasswordAsync(User user)
         {
             return Task.Factory.StartNew(() =>
             {
                 PasswordOptions passwordOptions = null;
 
-                if (ValidationService.Instance().User(user))
+                if (Validate.User(user))
                 {
                     passwordOptions = PasswordOptionsData.Instance().GetPasswordOptionsBySettings(user.Settings);
                 }
@@ -360,7 +346,7 @@ namespace PasswordManager.Services
         /// <param name="str">String from which a substring is selected.</param>
         /// <param name="random">Random object for index position</param>
         /// <returns>String: A random string.</returns>
-        private string RandomCharacter(string str, Random random)
+        private static string RandomCharacter(string str, Random random)
         {
             return str.Substring(random.Next(0, str.Length - 1), 1);
         }
@@ -371,7 +357,7 @@ namespace PasswordManager.Services
         /// <param name="str">String which is to be randomize.</param>
         /// <param name="random">Random object for Positioning.</param>
         /// <returns>String: A randomized string.</returns>
-        private string RandomizeString(string str, Random random)
+        private static string RandomizeString(string str, Random random)
         {
             string result = "";
             while (str.Length > 0)
@@ -390,7 +376,7 @@ namespace PasswordManager.Services
         /// <param name="Pass1">Password to be Matched.</param>
         /// <param name="Pass2">Password to be Matched With.</param>
         /// <returns>Boolean: True if Same otherwise False.</returns>
-        public Task<bool> IsSameAsync(string Pass1, string Pass2)
+        public static Task<bool> IsSameAsync(string Pass1, string Pass2)
         {
             //this need a little refactoring in a more better way i think. -gul:0301171513
             return Task.Factory.StartNew(() =>
@@ -405,7 +391,7 @@ namespace PasswordManager.Services
         /// <param name="Pass1">Password to be Matched.</param>
         /// <param name="Pass2">Password to be Matched With.</param>
         /// <returns>Boolean: True if Same otherwise False.</returns>
-        public bool IsSame(string Pass1, string Pass2)
+        public static bool IsSame(string Pass1, string Pass2)
         {
             return string.Equals(Pass1, Pass2);
         }

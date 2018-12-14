@@ -111,7 +111,7 @@ namespace PasswordManager.App
 
         private void txtOtherCharacters_TextChanged(object sender, EventArgs e)
         {
-            if (Verifier.Text(txtOtherCharacters.Text))
+            if (Verify.Text(txtOtherCharacters.Text))
             {
                passwordOptions.AllowOtherCharacters = true;
                passwordOptions.RequireOtherCharacters = true;
@@ -126,11 +126,11 @@ namespace PasswordManager.App
 
         private void txtMinimumCharacters_TextChanged(object sender, EventArgs e)
         {
-            if (Verifier.Text(txtMinimumCharacters.Text))
+            if (Verify.Text(txtMinimumCharacters.Text))
             {
                passwordOptions.MinimumCharacters = Convert.ToInt32(txtMinimumCharacters.Text);
 
-                if (Verifier.Text(txtMaximumCharacters.Text))
+                if (Verify.Text(txtMaximumCharacters.Text))
                 {
                     int MinChars = Convert.ToInt32(txtMinimumCharacters.Text);
                     int MaxChars = Convert.ToInt32(txtMaximumCharacters.Text);
@@ -147,11 +147,11 @@ namespace PasswordManager.App
 
         private void txtMaximumCharacters_TextChanged(object sender, EventArgs e)
         {
-            if (Verifier.Text(txtMaximumCharacters.Text))
+            if (Verify.Text(txtMaximumCharacters.Text))
             {
                passwordOptions.MaximumCharacters = Convert.ToInt32(txtMaximumCharacters.Text);
 
-                if (Verifier.Text(txtMinimumCharacters.Text))
+                if (Verify.Text(txtMinimumCharacters.Text))
                 {
                     int MinChars = Convert.ToInt32(txtMinimumCharacters.Text);
                     int MaxChars = Convert.ToInt32(txtMaximumCharacters.Text);
@@ -172,7 +172,7 @@ namespace PasswordManager.App
             {
                 user.Settings.PasswordOptions = passwordOptions;
                 //update password options
-                SettingsService.Instance().UpdateUserPasswordOptionsAsync(user, user.Settings, passwordOptions);
+                SettingsService.UpdateUserPasswordOptionsAsync(user, user.Settings, passwordOptions);
             }
             catch (Exception ex)
             {

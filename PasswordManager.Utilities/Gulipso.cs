@@ -11,7 +11,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // I customized this code for my personal use.
 // Original Link : http://www.obviex.com/samples/encryption.aspx
-// Sajjad - 29-11-2016
 ///////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -19,7 +18,7 @@ using System.IO;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace PasswordManager.Gulipso
+namespace PasswordManager.Utilities
 {
     /// <summary>
     /// This class uses a symmetric key algorithm (Rijndael/AES) to encrypt and 

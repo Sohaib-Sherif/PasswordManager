@@ -7,41 +7,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace PasswordManager.Services
+namespace PasswordManager.Utilities//Move into Utilities or something
 {
     /// <summary>
-    /// Provides Validation for Different Entities and Objects in BearPass
+    /// A static class that provides validation for different entities and objects in BearPass
     /// </summary>
-    public class ValidationService
+    public static class Validate
     {
-        private static ValidationService _instance;
-
-        protected ValidationService()
-        {
-        }
-
-        public static ValidationService Instance()
-        {
-            if (_instance == null)
-            {
-                _instance = new ValidationService();
-            }
-
-            return _instance;
-        }
 
         /// <summary>
         /// Determines wether the supplied User object is valid.
         /// </summary>
         /// <param name="user">User object be validated.</param>
         /// <returns>Boolean: True if Valid otherwise False.</returns>
-        public bool User(User user)
+        public static bool User(User user)
         {
             //we should also check if user is authorized or exists -gul:0301171247
             //i think that would be heavy operation because i am calling this method in so many places. -gul:0401171150
             if (user != null)
             {
-                if (Verifier.ID(user.ID) && Verifier.Email(user.Email) && Verifier.Text(user.Master))
+                if (Verify.ID(user.ID) && Verify.Email(user.Email) && Verify.Text(user.Master))
                 {
                     return true;
                 }
@@ -55,11 +40,11 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="password">Password object be validated.</param>
         /// <returns>Boolean: True if Valid otherwise False.</returns>
-        public bool Password(Password password)
+        public static bool Password(Password password)
         {
             if (password != null)
             {
-                if (Verifier.Email(password.Email) && Verifier.Text(password.Text))
+                if (Verify.Email(password.Email) && Verify.Text(password.Text))
                 {
                     return true;
                 }
@@ -73,7 +58,7 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="passwords">List of type Password object be validated.</param>
         /// <returns>Boolean: True if Valid otherwise False.</returns>
-        public bool Passwords(List<Password> passwords)
+        public static bool Passwords(List<Password> passwords)
         {
             if (passwords != null)//I find this implementation to be stupid
             {
@@ -83,7 +68,7 @@ namespace PasswordManager.Services
                 {
                     if (password != null)
                     {
-                        if (!Verifier.Email(password.Email) || !Verifier.Text(password.Text))
+                        if (!Verify.Email(password.Email) || !Verify.Text(password.Text))
                         {
                             result = false;
                         }
@@ -101,11 +86,11 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="settings">Settings object be validated.</param>
         /// <returns>Boolean: True if Valid otherwise False.</returns>
-        public bool Settings(Settings settings)
+        public static bool Settings(Settings settings)
         {
             if (settings != null)
             {
-                if (Verifier.ID(settings.ID) && Verifier.ID(settings.UserID))
+                if (Verify.ID(settings.ID) && Verify.ID(settings.UserID))
                 {
                     return true;
                 }
@@ -119,11 +104,11 @@ namespace PasswordManager.Services
         /// </summary>
         /// <param name="passwordOptions">PasswordOptions object be validated.</param>
         /// <returns>Boolean: True if Valid otherwise False.</returns>
-        public bool PasswordOptions(PasswordOptions passwordOptions)
+        public static bool PasswordOptions(PasswordOptions passwordOptions)
         {
             if (passwordOptions != null)
             {
-                if (Verifier.ID(passwordOptions.ID) && Verifier.ID(passwordOptions.SettingsID))
+                if (Verify.ID(passwordOptions.ID) && Verify.ID(passwordOptions.SettingsID))
                 {
                     return true;
                 }

@@ -1,5 +1,6 @@
 ﻿using PasswordManager.Entities;
 using PasswordManager.Globals;
+using PasswordManager.Utilities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,23 +9,9 @@ namespace PasswordManager.Services
     /// <summary>
     /// Provides access to Encryption and Decryption functions.
     /// </summary>
-    public class CryptoService
+    public static class CryptoService //I don't agree of encrypting everything,means I will change things in gullipso
+		//and make some refactoring steps in the skeleton of some other classes because some things are unnecessary
     {
-        private static CryptoService _instance;
-
-        protected CryptoService()
-        {
-        }
-
-        public static CryptoService Instance()
-        {
-            if (_instance == null)
-            {
-                _instance = new CryptoService();
-            }
-
-            return _instance;
-        }
 
         /// <summary>
         /// Encrypts the Password for supplied User.
@@ -32,14 +19,15 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be Encrypted.</param>
         /// <param name="password">Password to be encrypted.</param>
         /// <returns>Password: The Password in encrypted format.</returns>
-        public Task<Password> EncryptUserPasswordAsync(User user, Password password)
+        public static Task<Password> EncryptUserPasswordAsync(User user, Password password)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (Verifier.Text(password.Name)) password.Name = Gulipso.Gulipso.Encrypt(password.Name, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);                if (Verifier.Text(password.Email)) password.Email = Gulipso.Gulipso.Encrypt(password.Email, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-                if (Verifier.Text(password.Username)) password.Username = Gulipso.Gulipso.Encrypt(password.Username, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-                if (Verifier.Text(password.Website)) password.Website = Gulipso.Gulipso.Encrypt(password.Website, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-                if (Verifier.Text(password.Text)) password.Text = Gulipso.Gulipso.Encrypt(password.Text, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                if (Verify.Text(password.Name)) password.Name = Gulipso.Encrypt(password.Name, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+				if (Verify.Text(password.Email)) password.Email = Gulipso.Encrypt(password.Email, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                if (Verify.Text(password.Username)) password.Username = Gulipso.Encrypt(password.Username, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                if (Verify.Text(password.Website)) password.Website = Gulipso.Encrypt(password.Website, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                if (Verify.Text(password.Text)) password.Text = Gulipso.Encrypt(password.Text, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
                 return password;
             });
         }
@@ -51,27 +39,27 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be Encrypted.</param>
         /// <param name="password">Password to be encrypted.</param>
         /// <returns>Password: The Password in encrypted format.</returns>
-        public Password EncryptUserPassword(User user, Password password)
-        {
-            if (Verifier.Text(password.Name))
+        public static Password EncryptUserPassword(User user, Password password)//we only need master from User 
+        {// plus why encrypting everything? 
+            if (Verify.Text(password.Name))
             {
-                password.Name = Gulipso.Gulipso.Encrypt(password.Name, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                password.Name = Gulipso.Encrypt(password.Name, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
             }
-            if (Verifier.Text(password.Email))
+            if (Verify.Text(password.Email))
             {
-                password.Email = Gulipso.Gulipso.Encrypt(password.Email, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                password.Email = Gulipso.Encrypt(password.Email, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
             }
-            if (Verifier.Text(password.Username))
+            if (Verify.Text(password.Username))
             {
-                password.Username = Gulipso.Gulipso.Encrypt(password.Username, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                password.Username = Gulipso.Encrypt(password.Username, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
             }
-            if (Verifier.Text(password.Website))
+            if (Verify.Text(password.Website))
             {
-                password.Website = Gulipso.Gulipso.Encrypt(password.Website, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                password.Website = Gulipso.Encrypt(password.Website, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
             }
-            if (Verifier.Text(password.Text))
+            if (Verify.Text(password.Text))
             {
-                password.Text = Gulipso.Gulipso.Encrypt(password.Text, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                password.Text = Gulipso.Encrypt(password.Text, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
             }
             return password;
         }
@@ -82,7 +70,7 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be Encrypted.</param>
         /// <param name="passwords">List of Passwords to be encrypted.</param>
         /// <returns>List of Passwords: The List of Passwords in encrypted format.</returns>
-        public Task<List<Password>> EncryptUserPasswordsAsync(User user, List<Password> passwords)
+        public static Task<List<Password>> EncryptUserPasswordsAsync(User user, List<Password> passwords)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -103,7 +91,7 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be Encrypted.</param>
         /// <param name="passwords">List of Passwords to be encrypted.</param>
         /// <returns>List of Passwords: The List of Passwords in encrypted format.</returns>
-        public List<Password> EncryptUserPasswords(User user, List<Password> passwords)
+        public static List<Password> EncryptUserPasswords(User user, List<Password> passwords)
         {
             List<Password> EncryptedPasswords = new List<Password>();
 
@@ -121,15 +109,15 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be Decrypted.</param>
         /// <param name="password">Password to be Decrypted.</param>
         /// <returns>Password: The Password in Decrypted format.</returns>
-        public Task<Password> DecryptUserPasswordAsync(User user, Password password)
+        public static Task<Password> DecryptUserPasswordAsync(User user, Password password)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (Verifier.Text(password.Name)) password.Name = Gulipso.Gulipso.Decrypt(password.Name, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-                if (Verifier.Text(password.Email)) password.Email = Gulipso.Gulipso.Decrypt(password.Email, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-                if (Verifier.Text(password.Username)) password.Username = Gulipso.Gulipso.Decrypt(password.Username, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-                if (Verifier.Text(password.Website)) password.Website = Gulipso.Gulipso.Decrypt(password.Website, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-                if (Verifier.Text(password.Text)) password.Text = Gulipso.Gulipso.Decrypt(password.Text, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                if (Verify.Text(password.Name)) password.Name = Gulipso.Decrypt(password.Name, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                if (Verify.Text(password.Email)) password.Email = Gulipso.Decrypt(password.Email, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                if (Verify.Text(password.Username)) password.Username = Gulipso.Decrypt(password.Username, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                if (Verify.Text(password.Website)) password.Website = Gulipso.Decrypt(password.Website, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+                if (Verify.Text(password.Text)) password.Text = Gulipso.Decrypt(password.Text, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
                 return password;
             });
         }
@@ -140,13 +128,13 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be Decrypted.</param>
         /// <param name="password">Password to be Decrypted.</param>
         /// <returns>Password: The Password in Decrypted format.</returns>
-        public Password DecryptUserPassword(User user, Password password)
+        public static Password DecryptUserPassword(User user, Password password)
         {
-            if (Verifier.Text(password.Name)) password.Name = Gulipso.Gulipso.Decrypt(password.Name, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-            if (Verifier.Text(password.Email)) password.Email = Gulipso.Gulipso.Decrypt(password.Email, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-            if (Verifier.Text(password.Username)) password.Username = Gulipso.Gulipso.Decrypt(password.Username, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-            if (Verifier.Text(password.Website)) password.Website = Gulipso.Gulipso.Decrypt(password.Website, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
-            if (Verifier.Text(password.Text)) password.Text = Gulipso.Gulipso.Decrypt(password.Text, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+            if (Verify.Text(password.Name)) password.Name = Gulipso.Decrypt(password.Name, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+            if (Verify.Text(password.Email)) password.Email = Gulipso.Decrypt(password.Email, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+            if (Verify.Text(password.Username)) password.Username = Gulipso.Decrypt(password.Username, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+            if (Verify.Text(password.Website)) password.Website = Gulipso.Decrypt(password.Website, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
+            if (Verify.Text(password.Text)) password.Text = Gulipso.Decrypt(password.Text, user.Master, Globals.Defaults.InitVector, Globals.Defaults.KeySize);
             return password;
         }
 
@@ -156,7 +144,7 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be Decrypted.</param>
         /// <param name="passwords">List of Passwords to be Decrypted.</param>
         /// <returns>List of Passwords: The List of Passwords in Decrypted format.</returns>
-        public Task<List<Password>> DecryptUserPasswordsAsync(User user, List<Password> passwords)
+        public static Task<List<Password>> DecryptUserPasswordsAsync(User user, List<Password> passwords)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -176,7 +164,7 @@ namespace PasswordManager.Services
         /// <param name="user">User for whom the Password is to be Decrypted.</param>
         /// <param name="passwords">List of Passwords to be Decrypted.</param>
         /// <returns>List of Passwords: The List of Passwords in Decrypted format.</returns>
-        public List<Password> DecryptUserPasswords(User user, List<Password> passwords)
+        public static List<Password> DecryptUserPasswords(User user, List<Password> passwords)
         {
             List<Password> decryptedPasswords = new List<Password>();
 

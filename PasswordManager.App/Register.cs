@@ -28,22 +28,22 @@ namespace PasswordManager.App
                 ResetControls();
                 btnRegister.Enabled = false;
 
-                if (!Verifier.Text(txtName.Text))
+                if (!Verify.Text(txtName.Text))
                 {
                     lblMassege.Text = "Enter Your Name";
                     lblMassege.ForeColor = Color.Red;
                 }
-                else if (!Verifier.Text(txtUsername.Text))
+                else if (!Verify.Text(txtUsername.Text))
                 {
                     lblMassege.Text = "Enter Your Username";
                     lblMassege.ForeColor = Color.Red;
                 }
-                else if (!Verifier.Email(txtEmail.Text))
+                else if (!Verify.Email(txtEmail.Text))
                 {
                     lblMassege.Text = "Plaese Enter a Valid Email Address.";
                     lblMassege.ForeColor = Color.Red;
                 }
-                else if (!Verifier.Text(txtLoginPass.Text))
+                else if (!Verify.Text(txtLoginPass.Text))
                 {
                     lblMassege.Text = "Enter Your Password. This will be used as your Master Password by default.";
                     lblMassege.BackColor = Color.Yellow;
@@ -60,9 +60,9 @@ namespace PasswordManager.App
                         Master = txtLoginPass.Text,
                     };
 
-                    if (!await UsersService.Instance().UserExistAsync(user))
+                    if (!await UsersService.UserExistAsync(user))
                     {
-                        user = await UsersService.Instance().RegisterUserAsync(user);
+                        user = await UsersService.RegisterUserAsync(user);
 
                         if (user != null)
                         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PasswordManager.Globals
 {
-    public static class Verifier
+    public static class Verify
     {
         public static bool Email(string Email)
         {

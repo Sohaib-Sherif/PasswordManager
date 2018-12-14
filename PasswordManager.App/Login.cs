@@ -33,14 +33,14 @@ namespace PasswordManager.App
                 ResetControls();
                 btnLogin.Enabled = false;
 
-                if (!Verifier.Email(txtEmail.Text))
+                if (!Verify.Email(txtEmail.Text))
                 {
                     lblMassege.Text = "Please Enter a Valid Email Address.";
                     lblMassege.ForeColor = Color.Red;
 
                     txtEmail.Focus();
                 }
-                else if (!Verifier.Text(txtLoginPass.Text))
+                else if (!Verify.Text(txtLoginPass.Text))
                 {
                     lblMassege.Text = "Enter Your Password.";
                     lblMassege.ForeColor = Color.Red;
@@ -58,7 +58,7 @@ namespace PasswordManager.App
 
                     picboxLoading.Show();
 
-                    User loginUser = await UsersService.Instance().LoginUserAsync(user);
+                    User loginUser = await UsersService.LoginUserAsync(user);
                     if (loginUser != null)
                     {
                         lblMassege.Text = "Login Successful.";
