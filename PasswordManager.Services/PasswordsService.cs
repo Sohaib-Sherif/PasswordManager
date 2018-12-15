@@ -24,25 +24,20 @@ namespace PasswordManager.Services
         {
             return Task.Factory.StartNew(() =>
             {
-                if (Validate.User(user))
-                {
-                    //List<Password> passwords = CryptoService.Decrypt(user, PasswordDAO.Instance().GetUserPasswords(user));
-                    List<Password> passwords = PasswordDAO.GetUserPasswords(user);
+                 List<Password> passwords = PasswordDAO.GetUserPasswords(user);
 
-                    if (passwords != null)//i am not using the validation service here because passwords are not yet decrypted and may return false when validation called -gul:0401171228
+                 if (passwords != null)//i am not using the validation service here because passwords are not yet decrypted and may return false when validation called -gul:0401171228
+                 {
+					passwords = CryptoService.DecryptUserPasswords(user, passwords);
+
+                    if (Validate.Passwords(passwords))
                     {
-                        passwords = CryptoService.DecryptUserPasswords(user, passwords);
-
-                        if (Validate.Passwords(passwords))
-                        {
-                            return passwords;
-                        }
-                        else return null;
+						return passwords;
                     }
                     else return null;
-                }
-                else return null;
-            });
+                 }
+                 else return null;
+			});
         }
 
 
@@ -53,44 +48,35 @@ namespace PasswordManager.Services
         /// <returns>List of Passwords for the supplied User.</returns>
         private static List<Password> GetAllUserPasswords(User user)
         {
-            if (Validate.User(user))
-            {
-                //List<Password> passwords = CryptoService.Decrypt(user, PasswordDAO.Instance().GetUserPasswords(user));
-                List<Password> passwords = PasswordDAO.GetUserPasswords(user);
+			List<Password> passwords = PasswordDAO.GetUserPasswords(user);
+			if (passwords != null)//i am not using the validation service here because passwords are not yet decrypted and may return false when validation called -gul:0401171228
+			{
+				passwords = CryptoService.DecryptUserPasswords(user, passwords);
 
-                if (passwords != null)//i am not using the validation service here because passwords are not yet decrypted and may return false when validation called -gul:0401171228
-                {
-                    passwords = CryptoService.DecryptUserPasswords(user, passwords);
-
-                    if (Validate.Passwords(passwords))
-                    {
-                        return passwords;
-                    }
-                    else return null;
-                }
-                else return null;
-            }
-            else return null;
+				if (Validate.Passwords(passwords))
+				{
+					return passwords;
+				}
+				else return null;
+			}
+			else return null;
         }
         /// <summary>
         /// Saves a new Password for the supplied User
         /// </summary>
         /// <param name="user">User for whom Password is to be stored.</param>
         /// <param name="password">Password to be saved.</param>
-        /// <returns>Password: The newly saved Password.</returns>
-        public static Task<Password> SaveNewUserPasswordAsync(User user, Password password)
+        /// <returns>Password: True if the password text ane email are valid to be saved, false otherwise</returns>
+        public static Task<Boolean> SaveNewUserPasswordAsync(User user, Password password)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (Validate.User(user) && Validate.Password(password))
-                {
-                    if (PasswordDAO.SaveNewUserPassword(user, CryptoService.EncryptUserPassword(user, password)) > 0)
-                    {
-                        return password;
-                    }
-                    else return null;
-                }
-                else return null;
+				if (Validate.Password(password))
+				{
+					PasswordDAO.SaveNewUserPassword(user, CryptoService.EncryptUserPassword(user, password));
+					return true;
+				}
+				else return false;
             });
         }
 

@@ -15,7 +15,7 @@ namespace PasswordManager.App
 {
     public partial class Dashboard : Form
     {
-        User user;
+        private User user;
 
         public Dashboard(User user)
         {
@@ -28,7 +28,7 @@ namespace PasswordManager.App
 
         public void LoadSettings(Settings settings)
         {
-            if (settings != null)
+            if (settings != null)//I don't think this will be null since we always make a user with default settings
             {
                 PasswordsGridView.Columns["ColEmail"].Visible = settings.ShowEmailColumn;
                 PasswordsGridView.Columns["ColUsername"].Visible = settings.ShowUsernameColumn;
@@ -165,15 +165,11 @@ namespace PasswordManager.App
             Application.Exit();
         }
 
-        public void ShowPasswords()
-        {
-            ShowPasswords(user);
-        }
-        public async void ShowPasswords(User user)
+        private async void ShowPasswords(User user)
         {
             ShowPasswords(await PasswordsService.GetAllUserPasswordsAsync(user));
         }
-        public void ShowPasswords(List<Password> Passwords)
+        private void ShowPasswords(List<Password> Passwords)
         {
             PasswordsGridView.Rows.Clear();
 
@@ -252,12 +248,12 @@ namespace PasswordManager.App
             }
         }
 
-        public void DisplayMassege(string Message)
+        private void DisplayMassege(string Message)
         {
             DisplayMassege(Message, Globals.Defaults.DefaultColor);
         }
 
-        public void DisplayMassege(string Message, Color FontColor)
+        private void DisplayMassege(string Message, Color FontColor)
         {
             lblMassege.Text = Message;
             lblMassege.ForeColor = FontColor;

@@ -16,111 +16,112 @@ namespace PasswordManager.App
 {
     public partial class PasswordGenerateOptions : Form
     {
-        public User user;
+        private User user;
 
-        public PasswordOptions passwordOptions;
+        private PasswordOptions PasswordOptions { get; set; }
 
         public PasswordGenerateOptions(User user)
         {
             InitializeComponent();
 
             this.user = user;
-            passwordOptions = user.Settings.PasswordOptions;
+            PasswordOptions = user.Settings.PasswordOptions;
         }
 
         private void PasswordGenerateOptions_Load(object sender, EventArgs e)
         {
-            AllowLowercaseCheckBox.Checked =passwordOptions.AllowLowercaseCharacters;
-            AllowUppercaseCheckBox.Checked =passwordOptions.AllowUppercaseCharacters;
-            AllowNumberCheckBox.Checked =passwordOptions.AllowNumberCharacters;
-            AllowSpecialCheckBox.Checked =passwordOptions.AllowSpecialCharacters;
-            AllowUnderscoreCheckBox.Checked =passwordOptions.AllowUnderscoreCharacters;
-            AllowSpaceCheckBox.Checked =passwordOptions.AllowSpaceCharacters;
+            AllowLowercaseCheckBox.Checked =PasswordOptions.AllowLowercaseCharacters;
+            AllowUppercaseCheckBox.Checked =PasswordOptions.AllowUppercaseCharacters;
+            AllowNumberCheckBox.Checked =PasswordOptions.AllowNumberCharacters;
+            AllowSpecialCheckBox.Checked =PasswordOptions.AllowSpecialCharacters;
+            AllowUnderscoreCheckBox.Checked =PasswordOptions.AllowUnderscoreCharacters;
+            AllowSpaceCheckBox.Checked =PasswordOptions.AllowSpaceCharacters;
 
-            RequireLowercaseCheckBox.Checked =passwordOptions.RequireLowercaseCharacters;
-            RequireUppercaseCheckBox.Checked =passwordOptions.RequireUppercaseCharacters;
-            RequireNumberCheckBox.Checked =passwordOptions.RequireNumberCharacters;
-            RequireSpecialCheckBox.Checked =passwordOptions.RequireSpecialCharacters;
-            RequireUnderscoreCheckBox.Checked =passwordOptions.RequireUnderscoreCharacters;
-            RequireSpaceCheckBox.Checked =passwordOptions.RequireSpaceCharacters;
+            RequireLowercaseCheckBox.Checked =PasswordOptions.RequireLowercaseCharacters;
+            RequireUppercaseCheckBox.Checked =PasswordOptions.RequireUppercaseCharacters;
+            RequireNumberCheckBox.Checked =PasswordOptions.RequireNumberCharacters;
+            RequireSpecialCheckBox.Checked =PasswordOptions.RequireSpecialCharacters;
+            RequireUnderscoreCheckBox.Checked =PasswordOptions.RequireUnderscoreCharacters;
+            RequireSpaceCheckBox.Checked =PasswordOptions.RequireSpaceCharacters;
 
-            txtOtherCharacters.Text =passwordOptions.OtherCharacters;
-            txtMinimumCharacters.Text =passwordOptions.MinimumCharacters.ToString();
-            txtMaximumCharacters.Text =passwordOptions.MaximumCharacters.ToString();
+            txtOtherCharacters.Text =PasswordOptions.OtherCharacters;
+            txtMinimumCharacters.Text =PasswordOptions.MinimumCharacters.ToString();
+            txtMaximumCharacters.Text =PasswordOptions.MaximumCharacters.ToString();
         }
-
-        private void AllowLowercaseCheckBox_CheckedChanged(object sender, EventArgs e)
+		#region checkBoxes
+		private void AllowLowercaseCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.AllowLowercaseCharacters = AllowLowercaseCheckBox.Checked;
+           PasswordOptions.AllowLowercaseCharacters = AllowLowercaseCheckBox.Checked;
         }
 
         private void AllowUppercaseCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.AllowUppercaseCharacters = AllowUppercaseCheckBox.Checked;
+           PasswordOptions.AllowUppercaseCharacters = AllowUppercaseCheckBox.Checked;
         }
 
         private void AllowNumberCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.AllowNumberCharacters = AllowNumberCheckBox.Checked;
+           PasswordOptions.AllowNumberCharacters = AllowNumberCheckBox.Checked;
         }
 
         private void AllowSpecialCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.AllowSpecialCharacters = AllowSpecialCheckBox.Checked;
+           PasswordOptions.AllowSpecialCharacters = AllowSpecialCheckBox.Checked;
         }
 
         private void AllowUnderscoreCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.AllowUnderscoreCharacters = AllowUnderscoreCheckBox.Checked;
+           PasswordOptions.AllowUnderscoreCharacters = AllowUnderscoreCheckBox.Checked;
         }
 
         private void AllowSpaceCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.AllowSpaceCharacters = AllowSpecialCheckBox.Checked;
+           PasswordOptions.AllowSpaceCharacters = AllowSpecialCheckBox.Checked;
         }
 
         private void RequireLowercaseCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.RequireLowercaseCharacters = RequireLowercaseCheckBox.Checked;
+           PasswordOptions.RequireLowercaseCharacters = RequireLowercaseCheckBox.Checked;
         }
 
         private void RequireUppercaseCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.RequireUppercaseCharacters = RequireUppercaseCheckBox.Checked;
+           PasswordOptions.RequireUppercaseCharacters = RequireUppercaseCheckBox.Checked;
         }
 
         private void RequireNumberCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.RequireNumberCharacters = RequireNumberCheckBox.Checked;
+           PasswordOptions.RequireNumberCharacters = RequireNumberCheckBox.Checked;
         }
 
         private void RequireSpecialCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.RequireSpecialCharacters = RequireSpecialCheckBox.Checked;
+           PasswordOptions.RequireSpecialCharacters = RequireSpecialCheckBox.Checked;
         }
 
         private void RequireUnderscoreCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.RequireUnderscoreCharacters = RequireUnderscoreCheckBox.Checked;
+           PasswordOptions.RequireUnderscoreCharacters = RequireUnderscoreCheckBox.Checked;
         }
 
         private void RequireSpaceCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           passwordOptions.RequireSpaceCharacters = RequireSpaceCheckBox.Checked;
+           PasswordOptions.RequireSpaceCharacters = RequireSpaceCheckBox.Checked;
         }
+		#endregion
 
-        private void txtOtherCharacters_TextChanged(object sender, EventArgs e)
+		private void txtOtherCharacters_TextChanged(object sender, EventArgs e)
         {
             if (Verify.Text(txtOtherCharacters.Text))
             {
-               passwordOptions.AllowOtherCharacters = true;
-               passwordOptions.RequireOtherCharacters = true;
-               passwordOptions.OtherCharacters = txtOtherCharacters.Text;
+               PasswordOptions.AllowOtherCharacters = true;
+               PasswordOptions.RequireOtherCharacters = true;
+               PasswordOptions.OtherCharacters = txtOtherCharacters.Text;
             }
             else {
-               passwordOptions.AllowOtherCharacters = false;
-               passwordOptions.RequireOtherCharacters = false;
-               passwordOptions.OtherCharacters = string.Empty;
+               PasswordOptions.AllowOtherCharacters = false;
+               PasswordOptions.RequireOtherCharacters = false;
+               PasswordOptions.OtherCharacters = string.Empty;
             }
         }
 
@@ -128,7 +129,7 @@ namespace PasswordManager.App
         {
             if (Verify.Text(txtMinimumCharacters.Text))
             {
-               passwordOptions.MinimumCharacters = Convert.ToInt32(txtMinimumCharacters.Text);
+               PasswordOptions.MinimumCharacters = Convert.ToInt32(txtMinimumCharacters.Text);
 
                 if (Verify.Text(txtMaximumCharacters.Text))
                 {
@@ -136,12 +137,12 @@ namespace PasswordManager.App
                     int MaxChars = Convert.ToInt32(txtMaximumCharacters.Text);
 
                     if (MinChars > MaxChars)
-                        txtMaximumCharacters.Text = MinChars.ToString();
+                        txtMaximumCharacters.Text = txtMaximumCharacters.Text;
                 }
             }
             else
             {
-               passwordOptions.MinimumCharacters = 10;
+               PasswordOptions.MinimumCharacters = 10;
             }
         }
 
@@ -149,20 +150,20 @@ namespace PasswordManager.App
         {
             if (Verify.Text(txtMaximumCharacters.Text))
             {
-               passwordOptions.MaximumCharacters = Convert.ToInt32(txtMaximumCharacters.Text);
+               PasswordOptions.MaximumCharacters = Convert.ToInt32(txtMaximumCharacters.Text);
 
                 if (Verify.Text(txtMinimumCharacters.Text))
                 {
                     int MinChars = Convert.ToInt32(txtMinimumCharacters.Text);
                     int MaxChars = Convert.ToInt32(txtMaximumCharacters.Text);
 
-                    if (MaxChars < MinChars)
-                        txtMinimumCharacters.Text = MaxChars.ToString();
+					if (MaxChars < MinChars)
+						txtMinimumCharacters.Text = txtMaximumCharacters.Text;
                 }
             }
             else
             {
-               passwordOptions.MaximumCharacters = 12;
+               PasswordOptions.MaximumCharacters = 12;
             }
         }
 
@@ -170,9 +171,9 @@ namespace PasswordManager.App
         {
             try
             {
-                user.Settings.PasswordOptions = passwordOptions;
-                //update password options
-                SettingsService.UpdateUserPasswordOptionsAsync(user, user.Settings, passwordOptions);
+				user.Settings.PasswordOptions = PasswordOptions;
+				//update password options
+				SettingsService.UpdateUserPasswordOptionsAsync(user.Settings, PasswordOptions);
             }
             catch (Exception ex)
             {

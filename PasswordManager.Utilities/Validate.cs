@@ -68,14 +68,13 @@ namespace PasswordManager.Utilities//Move into Utilities or something
                 {
                     if (password != null)
                     {
-                        if (!Verify.Email(password.Email) || !Verify.Text(password.Text))
-                        {
-                            result = false;
+                        if (!Verify.Email(password.Email) || !Verify.Text(password.Text))//why would I verify
+                        {//the correctness of a password email?
+                            result = false;//I think I should break if one password was incorrect
                         }
                     }
                     else result = false;
                 }
-
                 return result;
             }
             else return false;

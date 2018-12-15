@@ -29,30 +29,25 @@ namespace PasswordManager.App
         
         private void NewPassword_Load(object sender, EventArgs e)
         {
-            btnSave.Enabled = IsEnable();
+            //btnSave.Enabled = IsEnable();
         }
 
-        private void ForSaveBtnEnable(object sender, EventArgs e)
-        {
-            btnSave.Enabled = IsEnable();
-        }
+		private void txtName_TextChanged(object sender, EventArgs e)
+		{
+			btnSave.Enabled = IsEnable();//Maybe I should do this to all txtboxes to validate and make sure 
+		}//the save btn wont' be enabled untill things are ok.
 
-        private bool IsEnable()
+		private bool IsEnable()
         {
             if (Verify.Text(txtName.Text) && Verify.Text(txtPassword.Text) && Verify.Email(txtEmail.Text))
                 return true;
             return false;
         }
 
-        private async void btnOptions_Click(object sender, EventArgs e)
+        private void btnOptions_Click(object sender, EventArgs e)
         {
             PasswordGenerateOptions passwordGenerateOptionsForm = new PasswordGenerateOptions(user);
-
-            if (passwordGenerateOptionsForm.ShowDialog() == DialogResult.OK)
-            {
-                user.Settings.PasswordOptions = passwordGenerateOptionsForm.passwordOptions;
-                txtPassword.Text = await PasswordsService.GeneratePasswordAsync(user);
-            }
+                //txtPassword.Text = await PasswordsService.GeneratePasswordAsync(user);
         }
 
         private async void btnGenerate_Click(object sender, EventArgs e)
@@ -77,8 +72,11 @@ namespace PasswordManager.App
             };
 
             try
-            {
-                await PasswordsService.SaveNewUserPasswordAsync(user, newPassword);
+            {//I should make sure there is not another password already saved for the same email on the same site
+                if(! await PasswordsService.SaveNewUserPasswordAsync(user, newPassword))
+				{
+					Messenger.Show("Password or Email are not valid", "Error");
+				}
             }
             catch (Exception ex)
             {
@@ -86,9 +84,9 @@ namespace PasswordManager.App
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Close();//why close here and hide everywhere else?
         }
-    }
+	}
 }

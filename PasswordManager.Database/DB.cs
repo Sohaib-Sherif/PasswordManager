@@ -31,15 +31,15 @@ Catalog=PasswordManager;Integrated Security = true");
 
             return _instance;
         }
-        
-        /// <summary>
-        /// Add New User with Settings and PasswordOptions
-        /// </summary>
-        /// <param name="user">User Entity.</param>
-        /// <param name="settings">Settings Entity.</param>
-        /// <param name="passwordOptions">PasswordOptions Entity.</param>
-        /// <returns>Number of Rows Affected.</returns>
-        public int AddNewUser(string[] userData)
+		#region User methods
+		/// <summary>
+		/// Add New User with Settings and PasswordOptions
+		/// </summary>
+		/// <param name="user">User Entity.</param>
+		/// <param name="settings">Settings Entity.</param>
+		/// <param name="passwordOptions">PasswordOptions Entity.</param>
+		/// <returns>Number of Rows Affected.</returns>
+		public int AddNewUser(string[] userData)
         {
             int AffectedRows = -1;
 
@@ -83,28 +83,27 @@ Catalog=PasswordManager;Integrated Security = true");
         public User GetUserByID(int userID)
         {
             User user = null;
-			
-            using (SqlCommand command = new SqlCommand(
-            "Select * from Users where ID = @ID", connection))
-            {
-                command.Parameters.AddWithValue("@ID", userID);
+			using (SqlCommand command = new SqlCommand(
+			"Select * from Users where ID = @ID", connection))
+			{
+				command.Parameters.AddWithValue("@ID", userID);
 
-                connection.Open();
+				connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+				SqlDataReader reader = command.ExecuteReader();
 
-                user = new User();
-
-                while (reader.Read())
-                {
-                    user.ID = Convert.ToInt32(reader["ID"]);
-                    user.Name = reader["Name"].ToString();
-                    user.Username = reader["Username"].ToString();
-                    user.Email = reader["Email"].ToString();
-                    user.Master = reader["MasterPassword"].ToString();
-                }
-            }
-
+				while (reader.Read())
+				{
+					user = new User
+					{
+						ID = Convert.ToInt32(reader["ID"]),
+						Name = reader["Name"].ToString(),
+						Username = reader["Username"].ToString(),
+						Email = reader["Email"].ToString(),
+						Master = reader["MasterPassword"].ToString()
+					};
+				}
+			}
             return user;
         }
 
@@ -116,25 +115,27 @@ Catalog=PasswordManager;Integrated Security = true");
         public User GetUserByEmail(string Email)
         {
             User user = null;
-                using (SqlCommand command = new SqlCommand(
-                "Select * from Users where Email = @Email", connection))
-                {
-                    command.Parameters.AddWithValue("@Email", Email);
+			using (SqlCommand command = new SqlCommand(
+			"Select * from Users where Email = @Email", connection))
+			{
+				command.Parameters.AddWithValue("@Email", Email);
 
-                    connection.Open();
+				connection.Open();
 
-                    SqlDataReader reader = command.ExecuteReader();
-                    
-                    while (reader.Read())
-                    {
-                        user = new User();
-                        user.ID = Convert.ToInt32(reader["ID"]);
-                        user.Name = reader["Name"].ToString();
-                        user.Username = reader["Username"].ToString();
-                        user.Email = Email;
-                        user.Master = reader["MasterPassword"].ToString();
-                    }
-                }
+				SqlDataReader reader = command.ExecuteReader();
+
+				while (reader.Read())
+				{
+					user = new User
+					{
+						ID = Convert.ToInt32(reader["ID"]),
+						Name = reader["Name"].ToString(),
+						Username = reader["Username"].ToString(),
+						Email = Email,
+						Master = reader["MasterPassword"].ToString()
+					};
+				}
+			}
             return user;
         }
 
@@ -145,53 +146,50 @@ Catalog=PasswordManager;Integrated Security = true");
         /// <returns>Number of Rows Affected.</returns>
         public int UpdateUser(User user)
         {
-            int AffectedRows = -1;
+            int AffectedRows = -1;//why -1 in someplaces and 0 in others?
+			using (SqlCommand command = new SqlCommand(
+			"Update Users set Name= @Name, Username= @Username, @Email=@Email, MasterPassword= @MasterPassword where ID = @ID", connection))
+			{
+				command.Parameters.AddWithValue("@ID", user.ID);
+				command.Parameters.AddWithValue("@Name", user.Name);
+				command.Parameters.AddWithValue("@Username", user.Username);
+				command.Parameters.AddWithValue("@Email", user.Email);
+				command.Parameters.AddWithValue("@MasterPassword", user.Master);
 
-            
-                using (SqlCommand command = new SqlCommand(
-                "Update Users set Name= @Name, Username= @Username, @Email=@Email, MasterPassword= @MasterPassword where ID = @ID", connection))
-                {
-                    command.Parameters.AddWithValue("@ID", user.ID);
-                    command.Parameters.AddWithValue("@Name", user.Name);
-                    command.Parameters.AddWithValue("@Username", user.Username);
-                    command.Parameters.AddWithValue("@Email", user.Email);
-                    command.Parameters.AddWithValue("@MasterPassword", user.Master);
+				connection.Open();
 
-                    connection.Open();
-
-                    AffectedRows = command.ExecuteNonQuery();
-                }
+				AffectedRows = command.ExecuteNonQuery();
+			}
             return AffectedRows;
         }
-
-        /// <summary>
-        /// Add New Password to Database.
-        /// </summary>
-        /// <param name="userID">User ID to add Password for.</param>
-        /// <param name="password">Password Entity to be saved.</param>
-        /// <returns>Number of Rows Affected.</returns>
-        public int AddNewPassword(int userID, Password password)
+		#endregion
+		#region Password methods
+		/// <summary>
+		/// Add New Password to Database.
+		/// </summary>
+		/// <param name="userID">User ID to add Password for.</param>
+		/// <param name="password">Password Entity to be saved.</param>
+		/// <returns>Number of Rows Affected.</returns>
+		public int AddNewPassword(int userID, Password password)
         {
             int AffectedRows = -1;
-                using (SqlCommand command = new SqlCommand(
-                "Insert into Passwords (UserID, Name, Email, Username, Website, Body, Notes, DateCreated, DateModified) values (@UserID, @Name, @Email, @Username, @Website, @Text, @Notes, @DateCreated, @DateModified)", connection))
-                {
-                    command.Parameters.AddWithValue("UserID", userID);
-                    command.Parameters.AddWithValue("Name", password.Name);
-                    command.Parameters.AddWithValue("Email", password.Email);
-                    command.Parameters.AddWithValue("Username", password.Username);
-                    command.Parameters.AddWithValue("Website", password.Website);
-                    command.Parameters.AddWithValue("Body", password.Text);
-                    command.Parameters.AddWithValue("Notes", password.Notes);
-                    command.Parameters.AddWithValue("DateCreated", password.DateCreated);
-                    command.Parameters.AddWithValue("DateModified", password.DateModified);
+			using (SqlCommand command = new SqlCommand(
+			"Insert into Passwords (UserID, Name, Email, Username, Website, Body, Notes, DateCreated, DateModified) values (@UserID, @Name, @Email, @Username, @Website, @Text, @Notes, @DateCreated, @DateModified)", connection))
+			{
+				command.Parameters.AddWithValue("UserID", userID);
+				command.Parameters.AddWithValue("Name", password.Name);
+				command.Parameters.AddWithValue("Email", password.Email);
+				command.Parameters.AddWithValue("Username", password.Username);
+				command.Parameters.AddWithValue("Website", password.Website);
+				command.Parameters.AddWithValue("Body", password.Text);
+				command.Parameters.AddWithValue("Notes", password.Notes);
+				command.Parameters.AddWithValue("DateCreated", password.DateCreated);
+				command.Parameters.AddWithValue("DateModified", password.DateModified);
 
-                    connection.Open();
+				connection.Open();
 
-                    AffectedRows = command.ExecuteNonQuery();
-                }
-            
-
+				AffectedRows = command.ExecuteNonQuery();
+			}
             return AffectedRows;
         }
 
@@ -203,31 +201,27 @@ Catalog=PasswordManager;Integrated Security = true");
         /// <returns>Number of Rows Affected.</returns>
         public int AddNewPasswords(int userID, List<Password> passwords)
         {
-            //use transaction in here -gul:0401171330
-
             int AffectedRows = 0;
-            foreach (Password password in passwords)
-            {
-                
-                    using (SqlCommand command = new SqlCommand(
-					"Insert into Passwords (UserID, Name, Email, Username, Website, Body, Notes, DateCreated, DateModified) values (@UserID, @Name, @Email, @Username, @Website, @Text, @Notes, @DateCreated, @DateModified)", connection))
-                    {
-                        command.Parameters.AddWithValue("UserID", userID);
-                        command.Parameters.AddWithValue("Name", password.Name);
-                        command.Parameters.AddWithValue("Email", password.Email);
-                        command.Parameters.AddWithValue("Username", password.Username);
-                        command.Parameters.AddWithValue("Website", password.Website);
-                        command.Parameters.AddWithValue("Body", password.Text);
-                        command.Parameters.AddWithValue("Notes", password.Notes);
-                        command.Parameters.AddWithValue("DateCreated", password.DateCreated);
-                        command.Parameters.AddWithValue("DateModified", password.DateModified);
+			foreach (Password password in passwords)
+			{
+				using (SqlCommand command = new SqlCommand(
+				"Insert into Passwords (UserID, Name, Email, Username, Website, Body, Notes, DateCreated, DateModified) values (@UserID, @Name, @Email, @Username, @Website, @Text, @Notes, @DateCreated, @DateModified)", connection))
+				{
+					command.Parameters.AddWithValue("UserID", userID);
+					command.Parameters.AddWithValue("Name", password.Name);
+					command.Parameters.AddWithValue("Email", password.Email);
+					command.Parameters.AddWithValue("Username", password.Username);
+					command.Parameters.AddWithValue("Website", password.Website);
+					command.Parameters.AddWithValue("Body", password.Text);
+					command.Parameters.AddWithValue("Notes", password.Notes);
+					command.Parameters.AddWithValue("DateCreated", password.DateCreated);
+					command.Parameters.AddWithValue("DateModified", password.DateModified);
 
-                        connection.Open();
+					connection.Open();
 
-                        AffectedRows += command.ExecuteNonQuery();
-                    }
-            }
-
+					AffectedRows += command.ExecuteNonQuery();
+				}
+			}
             return AffectedRows;
         }
 
@@ -238,39 +232,37 @@ Catalog=PasswordManager;Integrated Security = true");
         /// <returns>List of Passwords.</returns>
         public List<Password> GetPasswordsByUserID(int userID)
         {
-            List<Password> passwords = new List<Password>();
+			List<Password> passwords = new List<Password>();
+			using (SqlCommand command = new SqlCommand(
+			"Select * from Passwords where UserID = @UserID", connection))
+			{
+				command.Parameters.AddWithValue("@UserID", userID);
 
-            
-                using (SqlCommand command = new SqlCommand(
-                "Select * from Passwords where UserID = @UserID", connection))
-                {
-                    command.Parameters.AddWithValue("@UserID", userID);
+				connection.Open();
 
-                    connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
 
-                    SqlDataReader reader = command.ExecuteReader();
+				Password password;
 
-                    Password password;
+				while (reader.Read())
+				{
+					password = new Password
+					{
+						ID = Convert.ToInt32(reader["ID"]),
+						UserID = userID,
+						Name = reader["Name"].ToString(),
+						Email = reader["Email"].ToString(),
+						Username = reader["Username"].ToString(),
+						Website = reader["Website"].ToString(),
+						Text = reader["Body"].ToString(),
+						Notes = reader["Notes"].ToString(),
+						DateCreated = Convert.ToDateTime(reader["DateCreated"].ToString()),
+						DateModified = Convert.ToDateTime(reader["DateModified"].ToString())
+					};
 
-                    while (reader.Read())
-                    {
-                        password = new Password();
-                        password.ID = Convert.ToInt32(reader["ID"]);
-                        password.UserID = userID;
-                        password.Name = reader["Name"].ToString();
-                        password.Email = reader["Email"].ToString();
-                        password.Username = reader["Username"].ToString();
-                        password.Website = reader["Website"].ToString();
-                        password.Text = reader["Body"].ToString();
-                        password.Notes = reader["Notes"].ToString();
-                        password.DateCreated = Convert.ToDateTime(reader["DateCreated"].ToString());
-                        password.DateModified = Convert.ToDateTime(reader["DateModified"].ToString());
-
-                        passwords.Add(password);
-                    }
-                }
-            
-
+					passwords.Add(password);
+				}
+			}
             return passwords;
         }
 
@@ -280,7 +272,7 @@ Catalog=PasswordManager;Integrated Security = true");
         /// <param name="userID">User ID for Password.</param>
         /// <param name="password">Password Entity to be updated.</param>
         /// <returns>Number of Rows Affected.</returns>
-        public int UpdatePasswordByUserID(int userID, Password password)
+        public int UpdatePassword(int userID, Password password)
         {
             int AffectedRows = 0;
 
@@ -313,14 +305,14 @@ Catalog=PasswordManager;Integrated Security = true");
         /// <param name="userID">User ID for Passwords.</param>
         /// <param name="passwords">List of Password Entities.</param>
         /// <returns>Number of Rows Affected.</returns>
-        public int UpdatePasswordsByUserID(int userID, List<Password> passwords)
+        public int UpdatePasswords(int userID, List<Password> passwords)
         {
             //we'll use transaction in here
             int AffectedRows = 0;
 
             foreach (Password password in passwords)
             {
-                AffectedRows += UpdatePasswordByUserID(userID, password);
+                AffectedRows += UpdatePassword(userID, password);
             }
 
             return AffectedRows;
@@ -335,30 +327,29 @@ Catalog=PasswordManager;Integrated Security = true");
         public int DeletePasswordByID(int userID, int passwordID)
         {
             int AffectedRows = 0;
+			using (SqlCommand command = new SqlCommand(
+			"Delete from Passwords where ID = @ID AND UserID = @UserID", connection))
+			{
+				command.Parameters.AddWithValue("ID", passwordID);
+				command.Parameters.AddWithValue("UserID", userID);
 
-            
-                using (SqlCommand command = new SqlCommand(
-                "Delete from Passwords where ID = @ID AND UserID = @UserID", connection))
-                {
-                    command.Parameters.AddWithValue("ID", passwordID);
-                    command.Parameters.AddWithValue("UserID", userID);
+				connection.Open();
 
-                    connection.Open();
-
-                    AffectedRows = command.ExecuteNonQuery();
-                }
+				AffectedRows = command.ExecuteNonQuery();
+			}
          
 
             return AffectedRows;
         }
-
-        /// <summary>
-        /// Add Settings to Database for the User.
-        /// </summary>
-        /// <param name="userID">User ID for Settings.</param>
-        /// <param name="settings">Settings Entity to Saved.</param>
-        /// <returns>Number of Rows Affected.</returns>
-        public int AddSettingsByUserID(int userID, Settings settings)
+		#endregion
+		#region Settings methods
+		/// <summary>
+		/// Add Settings to Database for the User.
+		/// </summary>
+		/// <param name="userID">User ID for Settings.</param>
+		/// <param name="settings">Settings Entity to Saved.</param>
+		/// <returns>Number of Rows Affected.</returns>
+		public int AddSettingsByUserID(int userID, Settings settings)
         {
             int AffectedRows = 0;
             
@@ -398,18 +389,19 @@ Catalog=PasswordManager;Integrated Security = true");
 
                     SqlDataReader reader = command.ExecuteReader();
 
-                    while (reader.Read())
-                    {
-                        settings = new PasswordManager.Entities.Settings();
-
-                        settings.ID = Convert.ToInt32(reader["ID"]);
-                        settings.UserID = userID;
-                        settings.ShowEmailColumn = Convert.ToBoolean(reader["ShowEmailColumn"]);
-                        settings.ShowUsernameColumn = Convert.ToBoolean(reader["ShowUsernameColumn"]);
-                        settings.ShowPasswordColumn = Convert.ToBoolean(reader["ShowPasswordColumn"]);
-                        settings.DateTimeFormat = reader["DateTimeFormat"].ToString();
-                    }
-                }
+				while (reader.Read())
+				{
+					settings = new Settings
+					{
+						ID = Convert.ToInt32(reader["ID"]),
+						UserID = userID,
+						ShowEmailColumn = Convert.ToBoolean(reader["ShowEmailColumn"]),
+						ShowUsernameColumn = Convert.ToBoolean(reader["ShowUsernameColumn"]),
+						ShowPasswordColumn = Convert.ToBoolean(reader["ShowPasswordColumn"]),
+						DateTimeFormat = reader["DateTimeFormat"].ToString()
+					};
+				}
+			}
             
 
             return settings;
@@ -421,7 +413,7 @@ Catalog=PasswordManager;Integrated Security = true");
         /// <param name="userID">User ID for Settings</param>
         /// <param name="settings">Settings Entity to be updated.</param>
         /// <returns>Number of Rows Affected.</returns>
-        public int UpdateSettingsByUserID(int userID, Settings settings)
+        public int UpdateSettings(int userID, Settings settings)
         {
             int AffectedRows = 0;
 
@@ -443,9 +435,9 @@ Catalog=PasswordManager;Integrated Security = true");
             
             return AffectedRows;
         }
-
-
-        public int AddPasswordOptionsBySettingsID(int settingsID, PasswordOptions passwordOptions)
+		#endregion
+		#region PasswordOptions methods
+		public int AddPasswordOptionsBySettingsID(int settingsID, PasswordOptions passwordOptions)
         {
             int AffectedRows = 0;
             
@@ -483,15 +475,16 @@ Catalog=PasswordManager;Integrated Security = true");
         /// </summary>
         /// <param name="userID">User ID for PasswordOptions</param>
         /// <returns>PasswordOptions Entity.</returns>
-        public PasswordOptions GetPasswordOptionsByID(int userID)
+        public PasswordOptions GetPasswordOptionsByID(int userID)//Not used 
         {
             PasswordOptions passwordOptions = null;
             
                 using (SqlCommand command = new SqlCommand(
                 "Select * from PasswordOptions where SettingsID = @SettingsID", connection))
                 {
-                    //this method is rough right now. It will be removed later.
-                    command.Parameters.Add("@SettingsID", userID);
+                    //this method is rough right now. It will be removed later
+                    command.Parameters.AddWithValue("@SettingsID", userID);//how come we use userID for Settings
+				//ID, this is duplicated code!
 
                     connection.Open();
 
@@ -529,7 +522,7 @@ Catalog=PasswordManager;Integrated Security = true");
         /// </summary>
         /// <param name="settingsID">Settings ID for PasswordOptions</param>
         /// <returns>PasswordOptions Entity.</returns>
-        public PasswordOptions GetPasswordOptionsBySettingsID(int settingsID)
+        public PasswordOptions GetPasswordOptionsBySettingsID(int settingsID)//used in PasswordOptionsDAO
         {
             PasswordOptions passwordOptions = null;
             
@@ -631,6 +624,6 @@ Catalog=PasswordManager;Integrated Security = true");
 
             return AffectedRows;
         }
-
-    }
+		#endregion
+	}
 }

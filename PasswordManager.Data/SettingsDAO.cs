@@ -16,7 +16,7 @@ namespace PasswordManager.DAO
 
         public static int UpdateUserSettings(User user, Settings settings)
         {
-            return Database.UpdateSettingsByUserID(user.ID, settings);
+            return Database.UpdateSettings(user.ID, settings);
         }
 
         public static Settings GetUserSettings(User user)

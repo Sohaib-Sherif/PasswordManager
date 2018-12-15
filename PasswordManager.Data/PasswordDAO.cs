@@ -29,14 +29,14 @@ namespace PasswordManager.DAO
             return Database.GetPasswordsByUserID(user.ID);
         }
 
-        public static int UpdateUserPassword(User user, Password password)
-        {
-            return Database.UpdatePasswordByUserID(user.ID, password);
+        public static int UpdateUserPassword(User user, Password password)//I guess I can limit the numbers
+        {// of methods be removing the single operation methods and leave the one that works on lists
+            return Database.UpdatePassword(user.ID, password);
         }
 
         public static int UpdateUserPasswords(User user, List<Password> passwords)
         {
-            return Database.UpdatePasswordsByUserID(user.ID, passwords);
+            return Database.UpdatePasswords(user.ID, passwords);
         }
 
         public static int DeleteUserPassword(User user, Password password)

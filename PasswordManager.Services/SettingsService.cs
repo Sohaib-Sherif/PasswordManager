@@ -24,11 +24,7 @@ namespace PasswordManager.Services
         {
             return Task.Factory.StartNew(() =>
             {
-                if (Validate.User(user))
-                {
-                    return SettingsDAO.GetUserSettings(user);
-                }
-                else return null;
+				return SettingsDAO.GetUserSettings(user);
             });
         }
 
@@ -42,17 +38,13 @@ namespace PasswordManager.Services
         {
             return Task.Factory.StartNew(() =>
             {
-                if (Validate.User(user) && Validate.Settings(settings))
-                {
-                    if (SettingsDAO.UpdateUserSettings(user, settings) > 0)
-                    {
-                        user.Settings = settings;
+				if (SettingsDAO.UpdateUserSettings(user, settings) > 0)
+				{
+					user.Settings = settings;
 
-                        return user;
-                    }
-                    else return null;
-                }
-                else return null;
+					return user;
+				}
+				else return null;
             });
         }
 
@@ -65,36 +57,22 @@ namespace PasswordManager.Services
         {
             return Task.Factory.StartNew(() =>
             {
-                if (Validate.Settings(settings))
-                {
-                    return PasswordOptionsDAO.GetPasswordOptionsBySettings(settings);
-                }
-                else return null;
+				return PasswordOptionsDAO.GetPasswordOptionsBySettings(settings);
             });
         }
 
         /// <summary>
         /// Updates the PasswordOptions for supplied User Settings
         /// </summary>
-        /// <param name="user">User for Settings Access.</param>
         /// <param name="settings">Settings to be updated with PasswordOptions.</param>
         /// <param name="passwordOptions">PasswordOptions to be updated.</param>
-        /// <returns>User: User with the updated Settings and PasswordOptions.</returns>
-        public static Task<User> UpdateUserPasswordOptionsAsync(User user, Settings settings, PasswordOptions passwordOptions)
+        /// <returns>VOOOOIIIIDDDD</returns>
+        public static Task UpdateUserPasswordOptionsAsync(Settings settings, PasswordOptions passwordOptions)
         {
             return Task.Factory.StartNew(() =>
             {
-                if (Validate.User(user) && Validate.Settings(settings) && Validate.PasswordOptions(passwordOptions))
-                {
-                    if (PasswordOptionsDAO.UpdatePasswordOptionsBySettings(settings, passwordOptions) > 0)
-                    {
-                        user.Settings.PasswordOptions = passwordOptions;
-                        return user;
-                    }
-                    else return null;
-                }
-                else return null;
-            });
+				PasswordOptionsDAO.UpdatePasswordOptionsBySettings(settings, passwordOptions);
+			});
         }
     }
 }
