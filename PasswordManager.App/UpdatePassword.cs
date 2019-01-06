@@ -93,5 +93,5 @@ namespace PasswordManager.App
                 Messenger.Show(ex.Message + " " + ex.HResult, "Error");
             }
         }
-    }
+	}
 }
