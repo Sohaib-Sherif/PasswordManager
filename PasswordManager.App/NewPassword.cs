@@ -76,7 +76,7 @@ namespace PasswordManager.App
             {//I should make sure there is not another password already saved for the same email on the same site
                 if(! await PasswordsService.SaveNewUserPasswordAsync(user, newPassword))
 				{
-					Messenger.Show("Password or Email are not valid", "Error");
+					Messenger.Show("كلمة السر غير صحيحة أو البريد الإلكتروني غير صحيح ", "Error");
 				}
             }
             catch (Exception ex)

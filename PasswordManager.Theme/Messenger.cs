@@ -34,15 +34,15 @@ namespace PasswordManager.Theme
         }
         private static void ShowInfoMessage(string Message)
         {
-            MessageBox.Show(Message, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(Message, "إعلام", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private static void ShowErrorMessage(string Message)
         {
-            MessageBox.Show("An error ocured during the process. Please report to Developer at sajjadarifgul@gmail.com with this screenshot.\n\nError Message: " + Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("حدث خطأ أثناء تنفيذ العملية..\n\nError Message: " + Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         private static void ShowWarningMessage(string Message)
         {
-            MessageBox.Show(Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            MessageBox.Show(Message, "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace PasswordManager.Theme
         /// <returns>Boolean: True if confirmed otherwise False.</returns>
         public static bool Confirm(string Message)
         {
-            if (MessageBox.Show(Message, "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            if (MessageBox.Show(Message, "تأكيد", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 return true;
             }

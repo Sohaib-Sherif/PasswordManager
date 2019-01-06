@@ -35,14 +35,14 @@ namespace PasswordManager.App
 
                 if (!Verify.Email(txtEmail.Text))
                 {
-                    lblMassege.Text = "Please Enter a Valid Email Address.";
+                    lblMassege.Text = "الرجاء إدخال بريد إلكتروني صحيح";
                     lblMassege.ForeColor = Color.Red;
 
                     txtEmail.Focus();
                 }
                 else if (!Verify.Text(txtLoginPass.Text))
                 {
-                    lblMassege.Text = "Enter Your Password.";
+                    lblMassege.Text = "الرجاء إدخال كلمة السر";
                     lblMassege.ForeColor = Color.Red;
 
                     txtLoginPass.Focus();
@@ -54,7 +54,7 @@ namespace PasswordManager.App
                     User loginUser = await UsersService.LoginUserAsync(txtEmail.Text, txtLoginPass.Text);
                     if (loginUser != null)
                     {
-                        lblMassege.Text = "Login Successful.";
+                        lblMassege.Text = "تمت عملية تسجيل الدخول بنجاح";
 
                         this.Hide();
                         Dashboard dashboard = new Dashboard(loginUser);
@@ -62,7 +62,7 @@ namespace PasswordManager.App
                     }
                     else
                     {
-                        lblMassege.Text = "No user found with the supplied credentials.";
+                        lblMassege.Text = "لا يوجد مستخدم بهذا البريد الإلكتروني";
                         lblMassege.ForeColor = Color.Red;
 
                         txtEmail.Focus();

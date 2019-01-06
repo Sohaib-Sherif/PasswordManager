@@ -10,7 +10,7 @@ namespace PasswordManager.Globals
     {
         public static string AppName { get
             {
-                return "BearPass";
+                return "Celeste";
             }
         }
 

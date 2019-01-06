@@ -30,22 +30,22 @@ namespace PasswordManager.App
 
                 if (!Verify.Text(txtName.Text))
                 {
-                    lblMassege.Text = "Enter Your Name";
+                    lblMassege.Text = "أدخل إسمك";
                     lblMassege.ForeColor = Color.Red;
                 }
                 else if (!Verify.Text(txtUsername.Text))
                 {
-                    lblMassege.Text = "Enter Your Username";
+                    lblMassege.Text = "أدخل إسم المستخدم";
                     lblMassege.ForeColor = Color.Red;
                 }
                 else if (!Verify.Email(txtEmail.Text))
                 {
-                    lblMassege.Text = "Plaese Enter a Valid Email Address.";
+                    lblMassege.Text = "الرجاء إدخال بريد إلكتروني صحيح";
                     lblMassege.ForeColor = Color.Red;
                 }
                 else if (!Verify.Text(txtLoginPass.Text))
                 {
-                    lblMassege.Text = "Enter Your Password. This will be used as your Master Password by default.";
+                    lblMassege.Text = "أدخل كلمة السر. ستكون هذه كلمة السر الرئيسية خاصتك إفتراضيا";
                     lblMassege.BackColor = Color.Yellow;
                     lblMassege.ForeColor = Color.Red;
                 }
@@ -69,7 +69,7 @@ namespace PasswordManager.App
 
 						if (user != null)
                         {
-                            lblMassege.Text = "User Registered.";
+                            lblMassege.Text = "تم التسجيل بنجاح";
 
                             this.Hide();
                             Dashboard dashboard = new Dashboard(user);
@@ -78,7 +78,7 @@ namespace PasswordManager.App
                     }
                     else
                     {
-                        lblMassege.Text = "A user with these credentials is already registered. Please Login or use different Email and Username.";
+                        lblMassege.Text = "هناك مستخدم مسجل بهذه البيانات بالفعل.";
                         lblMassege.ForeColor = Color.Red;
                     }
                     picboxLoading.Hide();

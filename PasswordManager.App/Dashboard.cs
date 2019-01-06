@@ -206,7 +206,7 @@ namespace PasswordManager.App
                     Clipboard.Clear();
                     Clipboard.SetText(PasswordsGridView.Rows[e.RowIndex].Cells["ColPassword"].Value.ToString());
                     System.Media.SystemSounds.Exclamation.Play();
-                    DisplayMassege(PasswordsGridView.Rows[e.RowIndex].Cells["ColName"].Value.ToString() + " Password Copied.");
+                    DisplayMassege(PasswordsGridView.Rows[e.RowIndex].Cells["ColName"].Value.ToString() + " تم نسخ كلمة السر");
                 }
                 else if (PasswordsGridView.Columns[e.ColumnIndex].Name == "ColUpdate")
                 {
@@ -217,13 +217,13 @@ namespace PasswordManager.App
                     if (updatePasswordForm.ShowDialog() == DialogResult.OK)
                     {
                         user.Passwords = await PasswordsService.GetAllUserPasswordsAsync(user);
-                        DisplayMassege("Password Updated.", Globals.Defaults.WarningColor);
+                        DisplayMassege("تم تحديث كلمة السر", Globals.Defaults.WarningColor);
                         ShowPasswords(user.Passwords);
                     }
                 }
                 else if (PasswordsGridView.Columns[e.ColumnIndex].Name == "ColDelete")
                 {
-                    if (Messenger.Confirm("Are you sure you want to delete this Password?\n\nTHIS TASK WILL NOT BE REVERTED."))
+                    if (Messenger.Confirm("هل أنت متأكد أنك ترغب في مسح كلمة السر؟\n\nهذه العملية لا يمكن التراجع عنها"))
                     {
                         int ID = Convert.ToInt32(PasswordsGridView.Rows[e.RowIndex].Cells["ColID"].Value.ToString());
 
@@ -235,12 +235,12 @@ namespace PasswordManager.App
                         if (await PasswordsService.RemoveUserPasswordAsync(user, passwordToDelete))
                         {
                             PasswordsGridView.Rows.RemoveAt(e.RowIndex);
-                            DisplayMassege("Password Deleted.", Globals.Defaults.WarningColor);
+                            DisplayMassege("تم مسح كلمة السر.", Globals.Defaults.WarningColor);
                             System.Media.SystemSounds.Hand.Play();
                         }
                         else
                         {
-                            DisplayMassege("Password NOT Deleted.", Globals.Defaults.ErrorColor);
+                            DisplayMassege("لم يتم مسح كلمة السر", Globals.Defaults.ErrorColor);
                             System.Media.SystemSounds.Exclamation.Play();
                         }
                     }
