@@ -84,7 +84,7 @@ namespace PasswordManager.App
 
                 if (passwordGenerateOptionsForm.ShowDialog() == DialogResult.OK)
                 {
-                    user.Settings.PasswordOptions = passwordGenerateOptionsForm.passwordOptions;
+                    user.Settings.PasswordOptions = passwordGenerateOptionsForm.PasswordOptions;
                     txtPassword.Text = await PasswordsService.GeneratePasswordAsync(user);
                 }
             }

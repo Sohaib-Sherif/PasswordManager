@@ -16,7 +16,7 @@ namespace PasswordManager.App
 {
     public partial class SettingsForm : Form
     {
-        public User user;
+        private User user;
 
         public SettingsForm(User user)
         {
@@ -46,7 +46,7 @@ namespace PasswordManager.App
 
             if (passwordGenerateOptionsForm.ShowDialog() == DialogResult.OK)
             {
-                user.Settings.PasswordOptions = passwordGenerateOptionsForm.passwordOptions;
+                user.Settings.PasswordOptions = passwordGenerateOptionsForm.PasswordOptions;
             }
         }
         
@@ -66,20 +66,6 @@ namespace PasswordManager.App
         {
             if (Verify.Text(txtUsername.Text.ToString()))
                 user.Username = txtUsername.Text.ToString();
-        }
-
-        private void txtPassword_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtMaster_TextChanged(object sender, EventArgs e)
-        {
-            //if (user.Settings.DifferentMaster)
-            //{
-            //    if (Verify.Text(txtMaster.Text.ToString()))
-            //        user.Settings.Master = txtMaster.Text.ToString();
-            //}
         }
 
         private void cmbDateFormat_SelectedIndexChanged(object sender, EventArgs e)
@@ -117,7 +103,8 @@ namespace PasswordManager.App
         {
             try
             {
-                UsersService.UpdateUserAsync(user);
+                UsersService.UpdateUserAsync(user);//maybe I should make the username a PK, because it
+				//would make the creation of the same username more than once impossible.
 
                 SettingsService.UpdateUserSettingsAsync(user, user.Settings);
             }

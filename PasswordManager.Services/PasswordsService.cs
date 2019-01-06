@@ -146,26 +146,27 @@ namespace PasswordManager.Services
             });
         }
 
-        /// <summary>
-        /// Updates the supplied List of Passwords.
-        /// </summary>
-        /// <param name="user">User for whom the Password is to be updated.</param>
-        /// <param name="passwords">List of Passwords to be updated.</param>
-        /// <returns>List of Password: The updated passwords.</returns>
+		/// <summary>
+		/// Updates the user's master password
+		/// </summary>
+		/// <param name="user">The user to change the master password for</param>
+		/// <param name="NewMaster">The new Master password</param>
+		/// <returns></returns>
         public static Task<User> ChangeMasterEncryption(User user, string NewMaster)
         {
             return Task.Factory.StartNew(() =>
             {
                 if (Validate.User(user))
                 {
-                    List<Password> allPasswords = GetAllUserPasswords(user);
+                    List<Password> allPasswords = GetAllUserPasswords(user);//we get them decrypted her
+					//then encrypt them again in the updateuserpasswords
                     
                     user.Master = NewMaster;
                     user = UsersService.UpdateUser(user);
                     
                     if (PasswordDAO.UpdateUserPasswords(user, CryptoService.EncryptUserPasswords(user, allPasswords)) > 0)
-                    {
-                        return user;
+					{//maybe I should remove this method reference if I'm going to use a static master key--soh
+						return user;
                     }
                     else return null;
                 }

@@ -18,7 +18,7 @@ namespace PasswordManager.App
     {
         private User user;
 
-        private PasswordOptions PasswordOptions { get; set; }
+        public PasswordOptions PasswordOptions { get; set; }
 
         public PasswordGenerateOptions(User user)
         {
@@ -137,7 +137,7 @@ namespace PasswordManager.App
                     int MaxChars = Convert.ToInt32(txtMaximumCharacters.Text);
 
                     if (MinChars > MaxChars)
-                        txtMaximumCharacters.Text = txtMaximumCharacters.Text;
+                        txtMaximumCharacters.Text = txtMinimumCharacters.Text;
                 }
             }
             else

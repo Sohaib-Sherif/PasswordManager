@@ -18,7 +18,7 @@ namespace PasswordManager.App
             Application.SetCompatibleTextRenderingDefault(false);
 
             //setting DatabaseConnectionString from app.config file.
-            Globals.DatabaseConnection.Instance().SetValue(Properties.Settings.Default["PasswordManagerDBConnection"].ToString());
+            //Globals.DatabaseConnection.Instance().SetValue(Properties.Settings.Default["PasswordManagerDBConnection"].ToString());
 
             Application.Run(new Login());
         }

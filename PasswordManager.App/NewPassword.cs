@@ -47,6 +47,7 @@ namespace PasswordManager.App
         private void btnOptions_Click(object sender, EventArgs e)
         {
             PasswordGenerateOptions passwordGenerateOptionsForm = new PasswordGenerateOptions(user);
+			passwordGenerateOptionsForm.ShowDialog();
                 //txtPassword.Text = await PasswordsService.GeneratePasswordAsync(user);
         }
 
@@ -86,7 +87,8 @@ namespace PasswordManager.App
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
-            this.Close();//why close here and hide everywhere else?
+            this.Close();//why close here and hide everywhere else?-I know why, because it appears as a dialog
+			//over the dashboard.
         }
 	}
 }

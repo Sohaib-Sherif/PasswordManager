@@ -60,9 +60,14 @@ namespace PasswordManager.App
 							txtEmail.Text,
 							txtLoginPass.Text
 						};
-                        User user = await UsersService.RegisterUserAsync(userData);
-						
-                        if (user != null)
+                        await UsersService.RegisterUserAsync(userData);
+						//this user has his passwords and everything set to null so initializing the dashboard
+						//with it is a problem that's why I'm going to use the method loginUserAsync
+						//to login the user and populate his data first.
+						User user = await UsersService.LoginUserAsync(userData[2], userData[3]);
+
+
+						if (user != null)
                         {
                             lblMassege.Text = "User Registered.";
 
@@ -111,5 +116,5 @@ namespace PasswordManager.App
             lblMassege.Text = string.Empty;
             btnRegister.Enabled = true;
         }
-    }
+	}
 }

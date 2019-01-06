@@ -8,7 +8,7 @@ namespace PasswordManager.Globals
 {
     public static class Variables
     {
-        public static string DatabaseConnectionString { get; set; }
+        //public static string DatabaseConnectionString { get; set; }
 
         public static List<DateFormat> DateFormats = new List<DateFormat>()
         {

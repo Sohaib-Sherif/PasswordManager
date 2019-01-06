@@ -18,8 +18,7 @@ namespace PasswordManager.Database
 
 		protected DB()
         {
-			connection = new SqlConnection(@"Data Source=(local);Initial
-Catalog=PasswordManager;Integrated Security = true");
+			connection = new SqlConnection(@"Data Source=(local); Initial Catalog=PasswordManager; Integrated Security = TRUE");
         }
 
         public static DB Instance()
@@ -71,8 +70,8 @@ Catalog=PasswordManager;Integrated Security = true");
 
                     return 0;
                 }
-
-            return AffectedRows;
+			connection.Close();
+			return AffectedRows;
         }
         
         /// <summary>
@@ -103,6 +102,8 @@ Catalog=PasswordManager;Integrated Security = true");
 						Master = reader["MasterPassword"].ToString()
 					};
 				}
+				reader.Close();
+				connection.Close();
 			}
             return user;
         }
@@ -123,7 +124,7 @@ Catalog=PasswordManager;Integrated Security = true");
 				connection.Open();
 
 				SqlDataReader reader = command.ExecuteReader();
-
+				
 				while (reader.Read())
 				{
 					user = new User
@@ -135,6 +136,9 @@ Catalog=PasswordManager;Integrated Security = true");
 						Master = reader["MasterPassword"].ToString()
 					};
 				}
+				reader.Close();
+				connection.Close();
+
 			}
             return user;
         }
@@ -159,6 +163,8 @@ Catalog=PasswordManager;Integrated Security = true");
 				connection.Open();
 
 				AffectedRows = command.ExecuteNonQuery();
+
+				connection.Close();
 			}
             return AffectedRows;
         }
@@ -174,7 +180,7 @@ Catalog=PasswordManager;Integrated Security = true");
         {
             int AffectedRows = -1;
 			using (SqlCommand command = new SqlCommand(
-			"Insert into Passwords (UserID, Name, Email, Username, Website, Body, Notes, DateCreated, DateModified) values (@UserID, @Name, @Email, @Username, @Website, @Text, @Notes, @DateCreated, @DateModified)", connection))
+			"Insert into Passwords (UserID, Name, Email, Username, Website, Body, Notes, DateCreated, DateModified) values (@UserID, @Name, @Email, @Username, @Website, @Body, @Notes, @DateCreated, @DateModified)", connection))
 			{
 				command.Parameters.AddWithValue("UserID", userID);
 				command.Parameters.AddWithValue("Name", password.Name);
@@ -189,6 +195,8 @@ Catalog=PasswordManager;Integrated Security = true");
 				connection.Open();
 
 				AffectedRows = command.ExecuteNonQuery();
+
+				connection.Close();
 			}
             return AffectedRows;
         }
@@ -205,7 +213,7 @@ Catalog=PasswordManager;Integrated Security = true");
 			foreach (Password password in passwords)
 			{
 				using (SqlCommand command = new SqlCommand(
-				"Insert into Passwords (UserID, Name, Email, Username, Website, Body, Notes, DateCreated, DateModified) values (@UserID, @Name, @Email, @Username, @Website, @Text, @Notes, @DateCreated, @DateModified)", connection))
+				"Insert into Passwords (UserID, Name, Email, Username, Website, Body, Notes, DateCreated, DateModified) values (@UserID, @Name, @Email, @Username, @Website, @Body, @Notes, @DateCreated, @DateModified)", connection))
 				{
 					command.Parameters.AddWithValue("UserID", userID);
 					command.Parameters.AddWithValue("Name", password.Name);
@@ -220,6 +228,8 @@ Catalog=PasswordManager;Integrated Security = true");
 					connection.Open();
 
 					AffectedRows += command.ExecuteNonQuery();
+
+					connection.Close();
 				}
 			}
             return AffectedRows;
@@ -237,7 +247,6 @@ Catalog=PasswordManager;Integrated Security = true");
 			"Select * from Passwords where UserID = @UserID", connection))
 			{
 				command.Parameters.AddWithValue("@UserID", userID);
-
 				connection.Open();
 
 				SqlDataReader reader = command.ExecuteReader();
@@ -262,6 +271,9 @@ Catalog=PasswordManager;Integrated Security = true");
 
 					passwords.Add(password);
 				}
+
+				reader.Close();
+				connection.Close();
 			}
             return passwords;
         }
@@ -294,7 +306,9 @@ Catalog=PasswordManager;Integrated Security = true");
                     connection.Open();
 
                     AffectedRows = command.ExecuteNonQuery();
-                }
+
+					connection.Close();
+			}
             
             return AffectedRows;
         }
@@ -336,6 +350,8 @@ Catalog=PasswordManager;Integrated Security = true");
 				connection.Open();
 
 				AffectedRows = command.ExecuteNonQuery();
+
+				connection.Close();
 			}
          
 
@@ -365,7 +381,9 @@ Catalog=PasswordManager;Integrated Security = true");
                     connection.Open();
 
                     AffectedRows = command.ExecuteNonQuery();
-                }
+
+					connection.Close();
+			}
             
 
             return AffectedRows;
@@ -401,6 +419,8 @@ Catalog=PasswordManager;Integrated Security = true");
 						DateTimeFormat = reader["DateTimeFormat"].ToString()
 					};
 				}
+				reader.Close();
+				connection.Close();
 			}
             
 
@@ -431,7 +451,9 @@ Catalog=PasswordManager;Integrated Security = true");
                     connection.Open();
 
                     AffectedRows = command.ExecuteNonQuery();
-                }
+
+					connection.Close();
+			}
             
             return AffectedRows;
         }
@@ -464,7 +486,9 @@ Catalog=PasswordManager;Integrated Security = true");
                     connection.Open();
 
                     AffectedRows = command.ExecuteNonQuery();
-                }
+
+					connection.Close();
+			}
             
 
             return AffectedRows;
@@ -511,7 +535,9 @@ Catalog=PasswordManager;Integrated Security = true");
                         passwordOptions.MaximumCharacters = Convert.ToInt32(reader["MaximumCharacters"]);
                         passwordOptions.OtherCharacters = Convert.ToString(reader["OtherCharacters"]);
                     }
-                }
+				reader.Close();
+				connection.Close();
+			}
             
 
             return passwordOptions;
@@ -558,7 +584,9 @@ Catalog=PasswordManager;Integrated Security = true");
                         passwordOptions.MaximumCharacters = Convert.ToInt32(reader["MaximumCharacters"]);
                         passwordOptions.OtherCharacters = Convert.ToString(reader["OtherCharacters"]);
                     }
-                }
+				reader.Close();
+				connection.Close();
+			}
             
 
             return passwordOptions;
@@ -619,7 +647,9 @@ Catalog=PasswordManager;Integrated Security = true");
                     connection.Open();
 
                     AffectedRows = command.ExecuteNonQuery();
-                }
+
+					connection.Close();
+			}
             
 
             return AffectedRows;

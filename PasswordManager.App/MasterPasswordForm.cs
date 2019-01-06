@@ -68,7 +68,7 @@ namespace PasswordManager.App
                     if (Verify.Text(txtMaster.Text) && PasswordsService.IsSame(user.Master, txtMaster.Text))
                     {
                         if (MessageBox.Show("Are you sure you want to change your Master Password?\n\nPlease write down your Master Password for safe keeping, if you forgot your Master Password, you will not be able to recover your Passwords.\n\nFor more guidelines goto Dashboard > Guidelines.", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
-                        {
+                         {
                             picboxLoading.Show();
                             btnSave.Enabled = false;
 
@@ -95,13 +95,13 @@ namespace PasswordManager.App
                 btnSave.Enabled = true;
             }
         }
-
+		//TextChanged listener for the text boxes
         private void CheckSaveEnable(object sender, EventArgs e)
         {
             btnSave.Enabled = IsEnable();
         }
 
-        public bool IsEnable()
+        private bool IsEnable()
         {
             if (PasswordsService.IsSame(txtNewMaster.Text, txtConfirmMaster.Text) && Verify.Text(txtNewMaster.Text) && Verify.Text(txtConfirmMaster.Text))
             {
@@ -111,7 +111,7 @@ namespace PasswordManager.App
                     lblMassege.Text = "You can try to save now.";
                     lblMassege.ForeColor = Color.FromArgb(67, 140, 235);
                     return true;
-                }
+                }//maybe I should check if new master is same as old master --soh
                 else
                 {
                     lblMassege.Text = "Your Master Password is incorrect.";
