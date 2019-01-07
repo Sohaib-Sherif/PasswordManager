@@ -101,7 +101,8 @@ namespace PasswordManager.App
 
         private void lblForgotPassword_Click(object sender, EventArgs e)
         {//should send the password to the person's email
-            Messenger.Show("Sorry! There is no way you can access your passwords without your Master Password.", "Warning");
+			ForgotPassword forgotPassword = new ForgotPassword();
+			forgotPassword.ShowDialog();
         }
     }
 }

@@ -23,9 +23,6 @@ namespace PasswordManager.App
             lblAppMotto.Text = Globals.Information.AppMotto;
             lblDetails1.Text = Globals.Information.AppDetails1;
             lblDetails2.Text = Globals.Information.AppDetails2;
-            lblDeveloperName.Text = Globals.Information.Developer;
-            lblDesignation.Text = Globals.Information.Designation;
-            lblWebsiteLink.Text = Globals.Information.WebsiteName;
         }
 
         private void lblPictureCopyRightsLink_Click(object sender, EventArgs e)
